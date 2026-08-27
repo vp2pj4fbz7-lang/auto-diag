@@ -4,7 +4,7 @@
 <meta name="theme-color" content="#111827"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Auto Diag">
 <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png">
-<title>Auto Diag V3</title>
+<title>Auto Diag V4</title>
 <style>
 :root{--bg:#0f1822;--side:#111827;--panel:#172538;--panel2:#223b57;--border:#3c5e7e;--text:#f6f8fb;--muted:#b7c7d7;--accent:#5bb7ff;--green:#55d98b;--warn:#ffe29a}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif}
@@ -24,7 +24,7 @@ input,select,textarea{width:100%;background:#0c1723;border:1px solid var(--borde
 @media(max-width:820px){.app{grid-template-columns:1fr}aside{height:auto;position:relative;border-right:0;border-bottom:1px solid var(--border)}.nav{display:flex;overflow:auto}.nav button{min-width:max-content}main{padding:14px}.grid{grid-template-columns:1fr}}
 </style></head>
 <body><div class="app">
-<aside><div class="brand">Auto Diag</div><div class="version">V3 • instalacje + marki</div>
+<aside><div class="brand">Auto Diag</div><div class="version">V4 • modele + diagnostyka</div>
 <div class="nav">
 <button class="active" data-v="home">Pulpit</button>
 <button data-v="faults">Baza usterek</button>
@@ -34,11 +34,12 @@ input,select,textarea{width:100%;background:#0c1723;border:1px solid var(--borde
 <button data-v="components">Atlas podzespołów</button>
 <button data-v="systems">Instalacje samochodowe</button>
 <button data-v="brands">Marki i typowe usterki</button>
+<button data-v="vehicles">Pojazdy / modele V4</button>
 <button data-v="internet">Szukaj w Internecie</button>
 <button data-v="repairs">Moje naprawy</button>
 </div></aside>
 <main>
-<section id="home" class="view active"><h1>Auto Diag V3</h1><p class="muted">Rozbudowana wersja do praktycznej diagnostyki warsztatowej.</p>
+<section id="home" class="view active"><h1>Auto Diag V4</h1><p class="muted">Rozbudowana wersja do praktycznej diagnostyki warsztatowej.</p>
 <div class="warn"><b>Uwaga:</b> nie wykonuj pomiarów wysokoprądowych, przy SRS ani przy układach HV hybryd/EV bez odpowiednich kwalifikacji i wyposażenia.</div>
 <div class="grid" style="margin-top:14px"><div class="card"><div class="kpi">18</div><b>procedur usterek</b></div><div class="card"><div class="kpi">20</div><b>kart podzespołów</b></div></div>
 <div class="card"><h2>Co mam zmierzyć?</h2><input id="quick" placeholder="np. nie kręci, brak ładowania, CAN, P0300..."><div id="quickResults"></div></div></section>
@@ -60,6 +61,19 @@ input,select,textarea{width:100%;background:#0c1723;border:1px solid var(--borde
 
 <section id="systems" class="view"><h1>Instalacje samochodowe</h1><p class="muted">Mapa układów: z czego są zbudowane, typowe objawy i pierwsze pomiary.</p><div class="toolbar"><input id="sysSearch" placeholder="np. CAN, ABS, ładowanie, AdBlue..."></div><div id="sysList"></div></section>
 <section id="brands" class="view"><h1>Marki i typowe usterki</h1><p class="warn"><b>Ważne:</b> to typowe kierunki diagnostyczne, nie pewna diagnoza. Usterki zależą od modelu, rocznika, silnika i wyposażenia.</p><div class="toolbar"><input id="brandSearch" placeholder="VW, BMW, Ford, Renault..."></div><div id="brandList"></div></section>
+
+
+<section id="vehicles" class="view">
+<h1>Pojazdy / modele — V4</h1>
+<p class="muted">Wybierz markę i model. Baza prowadzi od typowej usterki do punktów pomiarowych i DTC.</p>
+<div class="toolbar">
+<select id="vehBrand"></select>
+<select id="vehModel"></select>
+<input id="vehSearch" placeholder="Szukaj: rozruch, ABS, DPF, wycieraczki...">
+</div>
+<div id="vehList"></div>
+<div id="vehDetail"></div>
+</section>
 
 <section id="internet" class="view"><h1>Szukaj w Internecie</h1><div class="card"><input id="webQuery" placeholder="np. Octavia brak ładowania, P0335, CAN no communication"><div class="toolbar"><button class="secondary" onclick="webSearch('google')">Google</button><button class="secondary" onclick="webSearch('youtube')">YouTube</button><button class="secondary" onclick="webSearch('elektroda')">Elektroda</button><button class="secondary" onclick="webSearch('rosstech')">Ross-Tech</button><button class="secondary" onclick="webSearch('obdcodes')">OBD-Codes</button></div></div></section>
 
@@ -107,6 +121,32 @@ function renderBrands(){
  $('brandList').innerHTML=a.map(b=>`<div class="card"><h2>${b[0]}</h2><span class="badge">${b[1]}</span><h3>Często spotykane kierunki usterek</h3><ul>${b[2].map(x=>`<li>${x}</li>`).join('')}</ul><p><b>Diagnostyka:</b> ${b[3]}</p><button class="secondary" onclick="window.open('https://www.google.com/search?q='+encodeURIComponent('${b[0]} '+($('brandSearch').value||'typowe usterki diagnostyka')),'_blank')">Szukaj tej marki w Internecie</button></div>`).join('');
 }
 $('brandSearch').oninput=renderBrands;renderBrands();
+
+
+const vehicles=[{"brand": "Škoda", "model": "Octavia II", "gen": "1Z (2004–2013)", "engines": "1.6 MPI / 1.9 TDI / 2.0 TDI", "issues": [{"title": "Brak rozruchu / immobilizer", "dtc": ["P1570", "01314"], "where": "Stacyjka, licznik/immobilizer, ECU, przekaźniki zasilania.", "measure": ["Sprawdź napięcie akumulatora podczas rozruchu.", "Sprawdź RPM w ECU podczas kręcenia.", "Sprawdź status immobilizera w diagnostyce.", "Sprawdź zasilania ECU i masy."], "values": ["Akumulator podczas rozruchu: praktycznie >~9.5–10 V.", "CKP: ECU powinno widzieć obroty."], "note": "Przed wymianą ECU/licznika wyklucz zasilania i synchronizację immobilizera."}, {"title": "Problemy z zamkiem / mikrostykiem drzwi", "dtc": [], "where": "Zamek drzwi, wiązka w przelotce, moduł drzwi.", "measure": ["Sprawdź live data pozycji drzwi.", "Sprawdź przewody w przelotce.", "Sprawdź zasilanie modułu drzwi."], "values": ["Zasilanie modułu: napięcie instalacji.", "Sygnał mikrostyku powinien zmieniać stan."], "note": "Częste są uszkodzenia mechanizmu zamka i mikrostyków."}, {"title": "Czujnik ABS / pierścień", "dtc": ["00283", "00285"], "where": "Zwrotnica/łożysko koła, przewód czujnika do modułu ABS.", "measure": ["Porównaj live data 4 kół.", "Oscyloskopem porównaj sygnał z drugim kołem.", "Sprawdź przewód i złącze."], "values": ["Sygnał powinien być stabilny i porównywalny z drugim kołem."], "note": "W zależności od wersji pierścień może być zintegrowany z łożyskiem."}]}, {"brand": "Volkswagen", "model": "Golf V / VI", "gen": "1K / 5K", "engines": "1.4 TSI / 1.6 MPI / 1.9 TDI / 2.0 TDI", "issues": [{"title": "Brak ładowania / inteligentne ładowanie", "dtc": ["P0562", "P0563"], "where": "Alternator, B+, masa, przewód sterujący LIN.", "measure": ["Zmierz B+ alternatora i napięcie na akumulatorze.", "Sprawdź spadki napięcia.", "Sprawdź komunikację LIN, jeśli występuje."], "values": ["Klasyczne ładowanie często 13.8–14.7 V.", "Smart charging może zmieniać napięcie."], "note": "Nie oceniaj smart charging tylko po jednej wartości napięcia."}, {"title": "Wycieraczki / BCM", "dtc": [], "where": "Silnik wycieraczek, BCM, przełącznik, instalacja.", "measure": ["Sprawdź live data przełącznika.", "Sprawdź zasilanie silnika.", "Sprawdź sygnał parkowania i komunikację LIN, jeśli występuje."], "values": ["Zasilanie silnika: napięcie instalacji."], "note": "Samoczynna praca może wynikać z sygnału parkowania, BCM lub instalacji."}, {"title": "EGR / DPF diesel", "dtc": ["P0401", "P0403", "P2002", "P2463"], "where": "EGR, chłodnica EGR, DPF, czujnik różnicy ciśnień.", "measure": ["Porównaj EGR zadany/rzeczywisty.", "Sprawdź Δp DPF KOEO.", "Sprawdź temperatury EGT i przebieg regeneracji."], "values": ["Δp KOEO powinno być bliskie 0."], "note": "Najpierw potwierdź przyczynę nadmiernej produkcji sadzy."}]}, {"brand": "Audi", "model": "A4 B6 / B7", "gen": "8E/8H (2000–2008)", "engines": "1.8T / 2.0 / 1.9 TDI / 2.0 TDI", "issues": [{"title": "Moduł komfortu / wilgoć", "dtc": [], "where": "Moduł komfortu i wiązki w kabinie, odpływy podszybia.", "measure": ["Sprawdź wilgoć i korozję złączy.", "Sprawdź zasilania i masy modułu.", "Sprawdź komunikację CAN komfortu."], "values": ["Zasilania: napięcie instalacji."], "note": "Przy wielu losowych usterkach komfortu zawsze sprawdź wodę i masy."}, {"title": "Brak świateł / problemy z instalacją drzwi", "dtc": [], "where": "Moduły drzwi, przelotki, BCM/central electric.", "measure": ["Sprawdź zasilanie modułu drzwi.", "Sprawdź przewody w przelotce.", "Odczytaj DTC modułów drzwi."], "values": ["Spadki napięcia na masach powinny być minimalne."], "note": "Przerwy przewodów w ruchomych przelotkach są częstym kierunkiem kontroli."}]}, {"brand": "Ford", "model": "Focus II / III", "gen": "C307 / C346", "engines": "1.6 benzyna / 1.6 TDCi / 2.0 TDCi", "issues": [{"title": "Smart Charge — brak ładowania", "dtc": ["P0620", "P0562"], "where": "Alternator, PCM, przewody Smart Charge, akumulator.", "measure": ["Sprawdź B+ i masę.", "Sprawdź przewody sterujące alternatora.", "Porównaj żądane/rzeczywiste napięcie ładowania."], "values": ["Napięcie może dynamicznie się zmieniać."], "note": "Uszkodzenie przewodu sterującego może powodować nietypowe ładowanie mimo sprawnego alternatora."}, {"title": "DPF / EGR 1.6 TDCi", "dtc": ["P0401", "P2452", "P2463"], "where": "EGR, DPF, czujnik Δp, wężyki.", "measure": ["Sprawdź Δp KOEO i przy obrotach.", "Sprawdź wężyki.", "Sprawdź temperaturę pracy silnika."], "values": ["Δp KOEO: blisko 0."], "note": "Niedogrzany silnik może utrudniać regenerację."}]}, {"brand": "Opel", "model": "Astra H / J", "gen": "A04 / P10", "engines": "1.6 benzyna / 1.7 CDTI / 1.9 CDTI", "issues": [{"title": "CIM / problemy z komunikacją i kolumną", "dtc": [], "where": "Moduł CIM przy kolumnie kierownicy, złącza, CAN.", "measure": ["Sprawdź zasilania CIM.", "Sprawdź masy.", "Sprawdź CAN i DTC wielu modułów."], "values": ["Typowa CAN: ~60 Ω przy wyłączonym zasilaniu, jeśli architektura ma dwa terminatory."], "note": "Przed wymianą CIM wyklucz akumulator, masy i sieć."}, {"title": "EGR / DPF CDTI", "dtc": ["P0400", "P1901"], "where": "EGR, DPF, czujniki temperatury/ciśnienia.", "measure": ["Sprawdź pozycję EGR.", "Sprawdź Δp DPF.", "Sprawdź temperatury EGT."], "values": ["Δp KOEO powinno być bliskie 0."], "note": "Kody producenta mogą różnić się między sterownikami."}]}, {"brand": "Renault", "model": "Mégane III", "gen": "X95 (2008–2016)", "engines": "1.6 16V / 1.5 dCi", "issues": [{"title": "Karta / immobilizer / brak startu", "dtc": [], "where": "Czytnik/karta, UCH, blokada kolumny, ECU.", "measure": ["Sprawdź status karty w CLIP.", "Sprawdź zasilania UCH.", "Sprawdź blokadę kolumny i zgodę na rozruch."], "values": ["Akumulator podczas rozruchu: >~9.5–10 V praktycznie."], "note": "Niskie napięcie może generować wiele pozornych błędów UCH."}, {"title": "EGR / DPF 1.5 dCi", "dtc": ["P0409", "P242F"], "where": "EGR, DPF, czujnik Δp, EGT.", "measure": ["Porównaj EGR zadany/rzeczywisty.", "Sprawdź Δp.", "Sprawdź warunki regeneracji."], "values": ["Δp KOEO: blisko 0."], "note": "Przed wymuszoną regeneracją usuń przyczynę zapełniania."}]}, {"brand": "Peugeot / Citroën", "model": "308 / C4", "gen": "T7/T9 / B7", "engines": "1.6 VTi / THP / HDi", "issues": [{"title": "BSI / BSM — losowe problemy elektryczne", "dtc": [], "where": "BSI w kabinie, BSM w komorze silnika, zasilania i masy.", "measure": ["Sprawdź napięcie akumulatora.", "Sprawdź główne masy.", "Sprawdź zasilania BSI/BSM.", "Wykonaj pełny skan Diagbox."], "values": ["Zasilania modułów: napięcie instalacji."], "note": "Przy pracy z BSI zachowuj procedurę uśpienia/wybudzenia."}, {"title": "AdBlue / SCR", "dtc": ["P20E8", "P20EE"], "where": "Zbiornik/moduł AdBlue, pompa, grzałki, NOx.", "measure": ["Sprawdź ciśnienie żądane/rzeczywiste.", "Sprawdź grzałki i zasilanie modułu.", "Porównaj NOx przed/za SCR."], "values": ["Wartości ciśnienia zależą od systemu — użyj danych producenta."], "note": "Nie wymieniaj zbiornika bez weryfikacji zasilania i czujników."}]}, {"brand": "Fiat", "model": "Ducato X250/X290", "gen": "2006–", "engines": "2.3 / 3.0 MultiJet", "issues": [{"title": "Problemy rozruchu / zasilania ECU", "dtc": [], "where": "Akumulator, masy silnika/nadwozia, skrzynka bezpieczników, ECU.", "measure": ["Sprawdź spadki napięcia masy podczas rozruchu.", "Sprawdź B+ i zasilania ECU.", "Sprawdź RPM podczas kręcenia."], "values": ["Akumulator przy rozruchu praktycznie >~9.5–10 V."], "note": "W autach użytkowych stan mas i połączeń dużego prądu jest szczególnie ważny."}, {"title": "EGR / DPF / czujnik Δp", "dtc": ["P0401", "P2453"], "where": "EGR, DPF, przewody Δp, EGT.", "measure": ["Sprawdź Δp KOEO.", "Sprawdź wężyki.", "Sprawdź EGR zadany/rzeczywisty."], "values": ["Δp KOEO: blisko 0."], "note": "Uszkodzone lub zatkane wężyki mogą symulować zapchany DPF."}]}, {"brand": "Citroën", "model": "Berlingo II", "gen": "B9 (2008–2018)", "engines": "1.6 VTi / 1.6 HDi", "issues": [{"title": "Wycieraczki / BSI / silnik", "dtc": [], "where": "Przełącznik zespolony, BSI, silnik wycieraczek, wiązka.", "measure": ["Sprawdź komendę wycieraczek w live data.", "Sprawdź zasilanie silnika.", "Sprawdź parkowanie i wiązkę."], "values": ["Zasilanie silnika: napięcie instalacji."], "note": "Samoczynna praca może być logiczna (BSI/sygnał) albo elektryczna."}, {"title": "Brak kierunkowskazu / lampy tylnej", "dtc": [], "where": "BSI, wiązka tylna, masa lampy, złącze.", "measure": ["Sprawdź masę lampy pod obciążeniem.", "Sprawdź napięcie/PWM na wyjściu.", "Sprawdź stan złącza."], "values": ["Duży spadek na masie wskazuje słabe połączenie."], "note": "Nie oceniaj wyjścia PWM zwykłym próbnikiem żarówkowym bez wiedzy o sterowniku."}]}, {"brand": "Volvo", "model": "V40 II", "gen": "2012–2019", "engines": "T2/T3/D2/D3/D4", "issues": [{"title": "Drzwi zaryglowane / moduł drzwi", "dtc": [], "where": "Zamek, moduł drzwi, wiązka przelotki, CEM.", "measure": ["Sprawdź DTC modułu drzwi/CEM.", "Sprawdź komendy i status zamka w live data.", "Sprawdź wiązkę i zasilanie."], "values": ["Zasilanie modułu: napięcie instalacji."], "note": "Przed mechaniczną ingerencją potwierdź, czy moduł otrzymuje komendę."}, {"title": "CEM / problemy komunikacji", "dtc": [], "where": "CEM, zasilania, CAN, masy.", "measure": ["Sprawdź napięcie akumulatora.", "Sprawdź CAN.", "Sprawdź zasilania CEM."], "values": ["CAN często ~60 Ω przy wyłączonym zasilaniu, zależnie od topologii."], "note": "Niskie napięcie może wywoływać wiele kodów komunikacji."}]}];
+const brandSel=$('vehBrand'), modelSel=$('vehModel'), vehSearch=$('vehSearch');
+function fillVehicleBrands(){
+  const bs=['Wszystkie',...new Set(vehicles.map(v=>v.brand))];
+  brandSel.innerHTML=bs.map(x=>`<option>${x}</option>`).join('');
+  fillVehicleModels();
+}
+function fillVehicleModels(){
+  const b=brandSel.value;
+  const ms=['Wszystkie',...new Set(vehicles.filter(v=>b==='Wszystkie'||v.brand===b).map(v=>v.model))];
+  modelSel.innerHTML=ms.map(x=>`<option>${x}</option>`).join('');
+  renderVehicles();
+}
+function renderVehicles(){
+  const b=brandSel.value,m=modelSel.value,q=(vehSearch.value||'').toLowerCase();
+  const a=vehicles.filter(v=>(b==='Wszystkie'||v.brand===b)&&(m==='Wszystkie'||v.model===m)&&JSON.stringify(v).toLowerCase().includes(q));
+  $('vehList').innerHTML=a.map(v=>`<div class="card result" onclick="openVehicle('${encodeURIComponent(v.brand)}','${encodeURIComponent(v.model)}')"><span class="badge">${v.brand}</span><h2>${v.model}</h2><p><b>${v.gen}</b> • ${v.engines}</p><p class="muted">${v.issues.length} typowych procedur diagnostycznych</p></div>`).join('')||'<p class="muted">Brak wyników.</p>';
+}
+function openVehicle(b,m){
+  const v=vehicles.find(x=>x.brand===decodeURIComponent(b)&&x.model===decodeURIComponent(m));
+  $('vehDetail').innerHTML=`<div class="card"><button class="secondary" onclick="$('vehDetail').innerHTML=''">Zamknij</button><h2>${v.brand} ${v.model}</h2><p><b>${v.gen}</b> • ${v.engines}</p>${v.issues.map((i,idx)=>`<div class="item"><h3>${idx+1}. ${i.title}</h3>${i.dtc.length?`<p><b>DTC:</b> ${i.dtc.map(x=>`<span class="badge">${x}</span>`).join('')}</p>`:''}<p><b>Lokalizacja / obszar:</b> ${i.where}</p><h3>Pomiary krok po kroku</h3><ol>${i.measure.map(x=>`<li>${x}</li>`).join('')}</ol><h3>Wartości orientacyjne</h3><ul>${i.values.map(x=>`<li>${x}</li>`).join('')}</ul><div class="warn"><b>Uwaga:</b> ${i.note}</div></div>`).join('')}</div>`;
+  window.scrollTo(0,0);
+}
+brandSel.onchange=fillVehicleModels; modelSel.onchange=renderVehicles; vehSearch.oninput=renderVehicles; fillVehicleBrands();
 
 if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js');
 </script></body></html>
