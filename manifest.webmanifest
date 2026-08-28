@@ -1,10 +1,10 @@
 {
-  "name": "Auto Diag PRO V3 – Atlas podzespołów samochodowych",
-  "short_name": "Auto Diag PRO",
-  "start_url": "./?v=3.0",
+  "name": "Auto Diag PRO V4 – Diagnostyka po aucie PRO",
+  "short_name": "Auto Diag PRO V4",
+  "start_url": "./?v=4",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0b1624",
   "theme_color": "#102238",
-  "description": "Samochodowy asystent diagnostyczny: objawy, DTC, Atlas podzespołów, Live Data, procedury i trener."
+  "description": "Samochodowy asystent diagnostyczny: diagnostyka po aucie, DTC, Live Data, Atlas podzespołów i procedury."
 }

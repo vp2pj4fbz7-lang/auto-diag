@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Auto Diag PRO">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Auto Diag PRO V3 – Atlas podzespołów</title>
+<title>Auto Diag PRO V4 – Atlas podzespołów</title>
 <style>
 :root{
  --bg:#0b1220;--side:#111827;--panel:#162033;--panel2:#1f2b42;--border:#334155;
@@ -55,7 +55,7 @@ code{background:#0d1727;padding:2px 5px;border-radius:6px}
 <div class="app">
 <aside>
 <div class="brand">Auto Diag PRO</div>
-<div class="version">V3 • Diagnostyka samochodowa + DTC + Atlas podzespołów</div>
+<div class="version">V4 • Diagnostyka po aucie PRO + DTC + Atlas podzespołów</div>
 <div class="nav">
 <button class="active" data-v="home">Pulpit</button>
 <button data-v="vehicle">🚗 Diagnoza po aucie</button>
@@ -70,7 +70,7 @@ code{background:#0d1727;padding:2px 5px;border-radius:6px}
 
 <main>
 <section id="home" class="view active">
-<h1>Auto Diag PRO V3</h1>
+<h1>Auto Diag PRO V4</h1>
 <p class="muted">Warsztatowy asystent prowadzący od objawu i danych pojazdu do kolejnych pomiarów, interpretacji wyniku oraz możliwej naprawy.</p>
 <div class="grid3">
 <div class="card"><div class="muted small">Obsługiwane marki startowe</div><div class="kpi" id="kpiBrands">0</div></div>
@@ -87,18 +87,41 @@ code{background:#0d1727;padding:2px 5px;border-radius:6px}
 </section>
 
 <section id="vehicle" class="view">
-<h1>🚗 Diagnoza po aucie</h1>
-<p class="muted">Wybierz pojazd i objaw. Procedura zostanie dobrana do typu układu i typowych warunków diagnostycznych.</p>
+<h1>🚗 Diagnostyka po aucie PRO</h1>
+<p class="muted">Zbierz dane pojazdu, objaw, kody DTC i podstawowe pomiary. Aplikacja ustali priorytety kontroli i uruchomi właściwe drzewo diagnostyczne.</p>
 <div class="card">
+<h2>1. Identyfikacja pojazdu</h2>
 <div class="grid">
 <div><label>Marka</label><select id="brandSel"></select></div>
 <div><label>Model</label><select id="modelSel"></select></div>
 <div><label>Rocznik</label><select id="yearSel"></select></div>
 <div><label>Silnik</label><select id="engineSel"></select></div>
+<div><label>Skrzynia</label><select id="gearboxSel"><option>Manualna</option><option>Automatyczna</option><option>DSG / DCT</option><option>CVT</option><option>Nie wiem</option></select></div>
+<div><label>Przebieg [km]</label><input id="mileageInput" inputmode="numeric" placeholder="np. 245000"></div>
 </div>
-<div style="margin-top:12px"><label>Objaw</label><select id="symptomSel"></select></div>
-<div class="toolbar"><input id="vehicleDtc" placeholder="Opcjonalnie kod DTC, np. P0335"><button class="primary" id="startVehicleDiag">Rozpocznij diagnozę</button></div>
 </div>
+<div class="card">
+<h2>2. Układ i objaw</h2>
+<div class="grid">
+<div><label>Układ</label><select id="systemSel"></select></div>
+<div><label>Główny objaw</label><select id="symptomSel"></select></div>
+</div>
+<div style="margin-top:12px"><label>Dodatkowy opis objawu</label><input id="symptomText" placeholder="np. na zimnym odpala dobrze, po rozgrzaniu gaśnie i nie chce odpalić"></div>
+<div style="margin-top:12px"><label>Kody DTC</label><input id="vehicleDtc" placeholder="np. P0335, P0401, U0100"></div>
+</div>
+<div class="card">
+<h2>3. Szybkie dane diagnostyczne <span class="muted small">(opcjonalnie)</span></h2>
+<div class="grid3">
+<div><label>Napięcie akumulatora spoczynek [V]</label><input id="vBattRest" inputmode="decimal" placeholder="12.6"></div>
+<div><label>Napięcie podczas rozruchu [V]</label><input id="vBattCrank" inputmode="decimal" placeholder="10.5"></div>
+<div><label>RPM podczas rozruchu</label><input id="rpmCrank" inputmode="numeric" placeholder="250"></div>
+<div><label>Temperatura cieczy [°C]</label><input id="coolantTemp" inputmode="decimal" placeholder="90"></div>
+<div><label>Ciśnienie rail podczas rozruchu [bar]</label><input id="railCrank" inputmode="decimal" placeholder="300"></div>
+<div><label>Ładowanie na pracującym silniku [V]</label><input id="chargeV" inputmode="decimal" placeholder="14.2"></div>
+</div>
+<div class="toolbar"><button class="secondary" id="preAnalyzeVehicle">🔎 Analiza wstępna</button><button class="primary" id="startVehicleDiag">▶ Rozpocznij diagnozę krok po kroku</button></div>
+</div>
+<div id="vehiclePreBox"></div>
 <div id="vehicleDiagBox"></div>
 </section>
 
@@ -195,18 +218,12 @@ const vehicles={
 'Fiat':{'Ducato':['2006-2014|2.3 Multijet','2014-2021|2.3 Multijet'],'Punto':['2005-2014|1.3 Multijet','2005-2014|1.4 benzyna']}
 };
 
+const systems=['Rozruch / immobilizer','Silnik benzynowy','Silnik diesel','Układ paliwowy','Zapłon','Dolot / turbo','EGR / DPF / SCR','Ładowanie / akumulator','ABS / ESP','Skrzynia biegów','CAN / komunikacja','Klimatyzacja','Elektryka nadwozia','Inny'];
 const symptoms=[
-'Kręci, ale nie odpala',
-'Nie kręci rozrusznikiem',
-'Gaśnie podczas jazdy',
-'Brak mocy',
-'Szarpie / wypadają zapłony',
-'Wysokie spalanie',
-'Problem z ładowaniem',
-'Kontrolka ABS/ESP',
-'Brak komunikacji ze sterownikiem',
-'DPF często się zapycha',
-'Klimatyzacja nie chłodzi'
+'Kręci, ale nie odpala','Nie kręci rozrusznikiem','Odpala i gaśnie','Gaśnie podczas jazdy','Ciężko odpala na zimno','Ciężko odpala na ciepło',
+'Brak mocy','Tryb awaryjny','Szarpie / wypadają zapłony','Nierówna praca na biegu jałowym','Wysokie spalanie','Dymi na czarno','Dymi na biało / siwo',
+'Problem z ładowaniem','Rozładowuje akumulator na postoju','Kontrolka ABS/ESP','Brak komunikacji ze sterownikiem','DPF często się zapycha','EGR – błąd / nieprawidłowa praca',
+'Turbo – niedoładowanie / przeładowanie','Klimatyzacja nie chłodzi','Skrzynia szarpie / nie zmienia biegów','Nie działa centralny zamek / szyby','Nie działają wycieraczki','Inny objaw'
 ];
 
 const procedures=[
@@ -339,6 +356,7 @@ function fillVehicle(){
  $('brandSel').innerHTML=Object.keys(vehicles).map(x=>'<option>'+esc(x)+'</option>').join('');
  updateModels();
  $('symptomSel').innerHTML=symptoms.map(x=>'<option>'+esc(x)+'</option>').join('');
+ $('systemSel').innerHTML=systems.map(x=>'<option>'+esc(x)+'</option>').join('');
 }
 function updateModels(){
  const b=$('brandSel').value;
@@ -375,7 +393,20 @@ function findProcedure(sym,dtc){
  'Brak komunikacji ze sterownikiem':'Brak komunikacji ze sterownikiem',
  'DPF często się zapycha':'DPF często się zapycha',
  'Klimatyzacja nie chłodzi':'Klimatyzacja nie chłodzi',
+ 'Odpala i gaśnie':'Kręci, ale nie odpala',
  'Gaśnie podczas jazdy':'Kręci, ale nie odpala',
+ 'Ciężko odpala na zimno':'Kręci, ale nie odpala',
+ 'Ciężko odpala na ciepło':'Kręci, ale nie odpala',
+ 'Tryb awaryjny':'Brak mocy – diesel/benzyna turbo',
+ 'Nierówna praca na biegu jałowym':'Wypadanie zapłonu / szarpanie',
+ 'Dymi na czarno':'Brak mocy – diesel/benzyna turbo',
+ 'Dymi na biało / siwo':'Kręci, ale nie odpala',
+ 'Rozładowuje akumulator na postoju':'Problem z ładowaniem',
+ 'EGR – błąd / nieprawidłowa praca':'DPF często się zapycha',
+ 'Turbo – niedoładowanie / przeładowanie':'Brak mocy – diesel/benzyna turbo',
+ 'Skrzynia szarpie / nie zmienia biegów':'Brak komunikacji ze sterownikiem',
+ 'Nie działa centralny zamek / szyby':'Brak komunikacji ze sterownikiem',
+ 'Nie działają wycieraczki':'Brak komunikacji ze sterownikiem',
  'Wysokie spalanie':'Brak mocy – diesel/benzyna turbo'
  };
  return procedures.find(p=>p.title===map[sym])||procedures[0];
@@ -399,9 +430,39 @@ function startTree(proc,hostId,context){
  show();
 }
 
+function numVal(id){const raw=($(id).value||'').trim().replace(',','.'); return raw===''?null:Number(raw)}
+function parseDtcs(){return ($('vehicleDtc').value||'').toUpperCase().split(/[\s,;]+/).map(x=>x.trim()).filter(Boolean)}
+function vehicleContext(){
+ return $('brandSel').value+' '+$('modelSel').value+' • '+$('yearSel').value+' • '+$('engineSel').value+' • '+$('gearboxSel').value+($('mileageInput').value.trim()?' • '+$('mileageInput').value.trim()+' km':'')+' • '+$('systemSel').value+' • '+$('symptomSel').value;
+}
+function buildPreAnalysis(){
+ const notes=[], warnings=[], dtcs=parseDtcs();
+ const rest=numVal('vBattRest'), crank=numVal('vBattCrank'), rpm=numVal('rpmCrank'), rail=numVal('railCrank'), charge=numVal('chargeV'), temp=numVal('coolantTemp');
+ if(rest!==null){ if(rest<12.2) warnings.push('Akumulator ma niskie napięcie spoczynkowe ('+rest+' V) — przed dalszą diagnostyką sprawdź stan naładowania, klemy i test obciążeniowy.'); else notes.push('Napięcie spoczynkowe akumulatora wygląda użytecznie do dalszej diagnostyki: '+rest+' V.'); }
+ if(crank!==null){ if(crank<9.6) warnings.push('Podczas rozruchu napięcie spada do '+crank+' V — możliwy słaby akumulator, duże opory połączeń lub przeciążony rozrusznik.'); else notes.push('Spadek napięcia podczas rozruchu nie wygląda nadmiernie: '+crank+' V.'); }
+ if(rpm!==null){ if(rpm<150) warnings.push('RPM podczas rozruchu = '+rpm+' — sprawdź prędkość rozrusznika i sygnał CKP. Brak/niski RPM może blokować wtrysk i zapłon.'); else notes.push('ECU widzi obroty podczas rozruchu: '+rpm+' rpm.'); }
+ if(rail!==null){ if(rail<250 && /diesel|tdi|dci|hdi|cdti|multijet/i.test($('engineSel').value)) warnings.push('Ciśnienie rail podczas rozruchu = '+rail+' bar — dla wielu diesli może być zbyt niskie do startu. Sprawdź zasilanie paliwem, regulator, przelewy i pompę wysokiego ciśnienia.'); else notes.push('Zapisane ciśnienie rail podczas rozruchu: '+rail+' bar — porównaj ze specyfikacją konkretnego silnika.'); }
+ if(charge!==null){ if(charge<13.2) warnings.push('Napięcie ładowania '+charge+' V jest niskie dla klasycznego układu — sprawdź alternator, spadki napięć i sterowanie ładowaniem.'); else if(charge>15.2) warnings.push('Napięcie ładowania '+charge+' V jest wysokie — sprawdź regulator/sterowanie i czujnik akumulatora.'); else notes.push('Napięcie ładowania: '+charge+' V.'); }
+ if(temp!==null && temp<75 && /DPF|EGR|spalanie|brak mocy/i.test($('symptomSel').value)) warnings.push('Temperatura cieczy '+temp+' °C może być za niska do prawidłowej regeneracji DPF i strategii sterownika — sprawdź termostat/czujnik ECT.');
+ dtcs.forEach(c=>{ if(dtcBaseDb[c]) notes.push(c+' — '+dtcBaseDb[c]); else notes.push(c+' — brak pełnego opisu w lokalnej bazie; sprawdź opis producenta i Freeze Frame.'); });
+ if(!dtcs.length) notes.push('Brak wpisanych DTC — wykonaj pełny skan wszystkich modułów i zapisz błędy przed kasowaniem.');
+ notes.push('Przed wymianą części sprawdź zasilania, masy, wiązkę i parametry rzeczywiste danego układu.');
+ return {notes,warnings,dtcs};
+}
+function renderPreAnalysis(){
+ const a=buildPreAnalysis(); const ctx=vehicleContext();
+ const html='<div class="card"><div class="path">'+esc(ctx)+'</div><h2>🔎 Priorytety diagnostyczne</h2>'+
+ (a.warnings.length?'<div class="badbox"><b>Najpierw sprawdź:</b><br>'+a.warnings.map((x,i)=>(i+1)+'. '+esc(x)).join('<br>')+'</div>':'<div class="okbox"><b>Brak oczywistych czerwonych flag w podanych pomiarach.</b></div>')+
+ '<h3 style="margin-top:14px">Dalsze wskazówki</h3>'+a.notes.map(x=>'<div class="result">'+esc(x)+'</div>').join('')+
+ (($('symptomText').value||'').trim()?'<div class="note"><b>Opis użytkownika:</b> '+esc($('symptomText').value.trim())+'</div>':'')+'</div>';
+ $('vehiclePreBox').innerHTML=html;
+}
+$('preAnalyzeVehicle').addEventListener('click',renderPreAnalysis);
 $('startVehicleDiag').addEventListener('click',()=>{
- const ctx=$('brandSel').value+' '+$('modelSel').value+' • '+$('yearSel').value+' • '+$('engineSel').value+' • '+$('symptomSel').value+($('vehicleDtc').value.trim()?' • DTC '+$('vehicleDtc').value.trim().toUpperCase():'');
- const proc=findProcedure($('symptomSel').value,$('vehicleDtc').value);
+ renderPreAnalysis();
+ const dtcs=parseDtcs(); const primaryDtc=dtcs[0]||'';
+ const ctx=vehicleContext()+(dtcs.length?' • DTC '+dtcs.join(', '):'');
+ const proc=findProcedure($('symptomSel').value,primaryDtc);
  startTree(proc,'vehicleDiagBox',ctx);
 });
 
