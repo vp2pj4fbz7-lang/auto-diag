@@ -3,145 +3,147 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#102238">
+<meta name="theme-color" content="#111827">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Elektronik Diag">
+<meta name="apple-mobile-web-app-title" content="Auto Diag PRO">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-192.png">
-<title>Elektronik Diag V6.3 – Akademia Diagnostyki</title>
+<title>Auto Diag PRO V2 – Baza DTC</title>
 <style>
-:root{--bg:#0b1624;--side:#102238;--panel:#132b45;--panel2:#1c3c5d;--border:#355a7f;--text:#f6f9fc;--muted:#b9c9d9;--accent:#68b6ff;--ok:#57d38c;--bad:#ff7a7a}
+:root{
+ --bg:#0b1220;--side:#111827;--panel:#162033;--panel2:#1f2b42;--border:#334155;
+ --text:#f8fafc;--muted:#b9c4d4;--accent:#60a5fa;--ok:#4ade80;--bad:#fb7185;--warn:#facc15;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif}
-button,input,select{font:inherit}
-.app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
 aside{background:var(--side);border-right:1px solid var(--border);padding:20px;position:sticky;top:0;height:100vh}
-.brand{font-size:25px;font-weight:900}.version{color:var(--muted);font-size:12px;margin:4px 0 18px}
-.nav button{display:block;width:100%;text-align:left;border:0;background:transparent;color:white;padding:12px 13px;border-radius:11px;margin:3px 0;font-weight:700}
+.brand{font-size:26px;font-weight:900}.version{font-size:12px;color:var(--muted);margin:5px 0 18px}
+.nav button{display:block;width:100%;background:transparent;color:#fff;border:0;text-align:left;padding:12px 13px;border-radius:11px;margin:3px 0;font-weight:750}
 .nav button.active,.nav button:hover{background:var(--panel2)}
-main{padding:24px;max-width:1350px;width:100%}.view{display:none}.view.active{display:block}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px;margin:10px 0}
+main{padding:24px;max-width:1400px;width:100%}
+.view{display:none}.view.active{display:block}
+h1{margin:0 0 6px;font-size:32px}h2{margin:0 0 10px}h3{margin:0 0 8px}
+p{line-height:1.5}.muted{color:var(--muted)}.small{font-size:13px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px;margin:12px 0}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-h1{font-size:31px;margin:0 0 6px}h2{margin:0 0 10px}h3{margin:0 0 8px}p{line-height:1.5}.muted{color:var(--muted)}.small{font-size:13px}
-input,select{width:100%;background:#0d1c2d;border:1px solid var(--border);color:white;padding:12px;border-radius:10px}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.toolbar>*{flex:1;min-width:180px}
-.primary{background:var(--accent);color:#07111a;border:0;border-radius:10px;padding:11px 15px;font-weight:800;cursor:pointer}
-.secondary{background:var(--panel2);color:white;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-weight:700;cursor:pointer}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.toolbar>*{flex:1;min-width:170px}
+input,select,textarea{width:100%;background:#0d1727;color:#fff;border:1px solid var(--border);padding:12px;border-radius:10px}
+textarea{min-height:100px;resize:vertical}
+.primary,.secondary,.good,.danger{border:0;border-radius:10px;padding:11px 14px;font-weight:800;cursor:pointer}
+.primary{background:var(--accent);color:#07111a}.secondary{background:var(--panel2);color:#fff;border:1px solid var(--border)}
+.good{background:#173f2c;color:#c8f7d7;border:1px solid #2c7a50}.danger{background:#402029;color:#ffd0d7;border:1px solid #8b3a4b}
 .badge{display:inline-block;padding:4px 8px;border-radius:999px;background:var(--panel2);color:var(--muted);font-size:12px;margin:2px}
-.note{padding:12px;border:1px solid #816b2c;background:#2d2718;border-radius:12px;color:#ffe5a0}
-.danger{padding:12px;border:1px solid #9d4b4b;background:#351c22;border-radius:12px;color:#ffd0d0}
-.detailBox{background:#0f2135;border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:14px}
-.flow{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:12px 0}.flow span{background:#0d1c2d;border:1px solid var(--border);padding:8px 10px;border-radius:9px}.flow b{color:var(--accent)}
-.diagItem,.compCard,.lessonCard{cursor:pointer}.diagItem:hover,.compCard:hover,.lessonCard:hover{border-color:var(--accent)}
-.step{border-left:4px solid var(--border);padding:10px 12px;margin:10px 0;background:#0f2135;border-radius:0 10px 10px 0}
-.result{padding:10px;border-radius:9px;background:#182f49;margin-top:8px}
-.sourceBtns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.sourceBtns button{min-height:58px}
-.compCard{display:grid;grid-template-columns:95px 1fr;gap:16px;align-items:center}.iconBox{height:72px;border:1px solid var(--border);border-radius:12px;display:grid;place-items:center;background:#0d1c2d;font-size:34px}
-.academyGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.progressWrap{height:10px;background:#0d1c2d;border-radius:999px;overflow:hidden;border:1px solid var(--border)}.progressBar{height:100%;background:var(--accent);width:0}
-.lessonMeta{display:flex;gap:6px;flex-wrap:wrap;margin:7px 0}.check{float:right;font-size:20px}
-.quizOpt{display:block;width:100%;text-align:left;margin:8px 0;padding:11px;border-radius:10px;border:1px solid var(--border);background:#0d1c2d;color:var(--text)}
-.quizOpt.good{border-color:var(--ok);background:#163427}.quizOpt.wrong{border-color:var(--bad);background:#3a2025}
-.trainerChoice{display:block;width:100%;text-align:left;margin:8px 0}.lessonStep{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}.lessonStep .num{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--panel2);font-weight:900}
-.academyTop{display:grid;grid-template-columns:2fr 1fr;gap:14px}
-@media(max-width:1000px){.academyGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.academyTop{grid-template-columns:1fr}}
-@media(max-width:820px){.app{grid-template-columns:1fr}aside{height:auto;position:relative;border-right:0;border-bottom:1px solid var(--border)}.nav{display:flex;overflow:auto}.nav button{min-width:max-content}main{padding:14px}.grid{grid-template-columns:1fr}.sourceBtns{grid-template-columns:1fr 1fr}}
-@media(max-width:650px){.academyGrid{grid-template-columns:1fr}.compCard{grid-template-columns:75px 1fr}}
+.note{padding:12px;border:1px solid #7a6827;background:#302a17;border-radius:12px;color:#ffe89c}
+.alert{padding:12px;border:1px solid #873b46;background:#351c24;border-radius:12px;color:#ffd6dc}
+.flow{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:10px 0}.flow span{background:#0d1727;border:1px solid var(--border);padding:8px 10px;border-radius:9px}.flow b{color:var(--accent)}
+.step{border-left:4px solid var(--accent);background:#0f1b2e;padding:12px;margin:10px 0;border-radius:0 10px 10px 0}
+.result{background:#0f1b2e;border:1px solid var(--border);padding:12px;border-radius:10px;margin:10px 0}
+.choice{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0d1727;color:#fff}
+.choice:hover{border-color:var(--accent)}
+.kpi{font-size:30px;font-weight:900}.diag-card{cursor:pointer}.diag-card:hover{border-color:var(--accent)}
+.path{font-size:13px;color:var(--muted);margin-bottom:8px}
+hr{border:0;border-top:1px solid var(--border);margin:16px 0}
+.okbox{padding:12px;border:1px solid #2d7c52;background:#153524;border-radius:12px;color:#cef5da}
+.badbox{padding:12px;border:1px solid #914252;background:#3a2028;border-radius:12px;color:#ffd4da}
+code{background:#0d1727;padding:2px 5px;border-radius:6px}
+@media(max-width:900px){.app{grid-template-columns:1fr}aside{height:auto;position:relative;border-right:0;border-bottom:1px solid var(--border)}.nav{display:flex;overflow:auto}.nav button{min-width:max-content}.grid,.grid3{grid-template-columns:1fr}.main{padding:14px}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside>
-<div class="brand">Elektronik Diag</div>
-<div class="version">V7.2 • Baza DTC + Auto Diag PRO + Akademia</div>
+<div class="brand">Auto Diag PRO</div>
+<div class="version">V2 • Diagnostyka samochodowa + Baza DTC</div>
 <div class="nav">
 <button class="active" data-v="home">Pulpit</button>
-<button data-v="autodiag">🚗 Auto Diag PRO</button>
-<button data-v="dtcbase">📟 Baza DTC</button>
-<button data-v="diagnostics">🧭 Diagnostyka PRO</button>
-<button data-v="academy">🎓 Akademia Diagnostyki</button>
-<button data-v="internet">🌐 Szukaj w Internecie</button>
-<button data-v="atlas">🧩 Atlas podzespołów</button>
-<button data-v="datasheet">📄 Znajdź datasheet</button>
+<button data-v="vehicle">🚗 Diagnoza po aucie</button>
+<button data-v="dtc">🧾 Diagnoza po DTC</button>
+<button data-v="dtcbase">📟 Baza kodów DTC</button>
+<button data-v="live">📊 Live Data</button>
+<button data-v="trainer">🎓 Trener diagnostyki</button>
+<button data-v="library">📚 Baza procedur</button>
 </div>
 </aside>
+
 <main>
 <section id="home" class="view active">
-<h1>Elektronik Diag V7.2</h1>
-<p class="muted">Diagnostyka warsztatowa, szkolenie krok po kroku i graficzny atlas podzespołów.</p>
-<div class="grid">
-<div class="card"><h2>🚗 Auto Diag PRO</h2><p>Interaktywny asystent diagnostyki samochodowej: auto → objaw/DTC → pomiar → decyzja → naprawa.</p></div>
-<div class="card"><h2>🧭 Diagnostyka PRO</h2><p>Procedury krok po kroku: zasada działania, pomiary, drzewo decyzji i typowe usterki.</p></div>
-<div class="card"><h2>🎓 Akademia Diagnostyki</h2><p>20 lekcji szkoleniowych, quizy, zapis postępu i interaktywny Trener usterek.</p></div>
-<div class="card"><h2>🌐 Szukaj naprawy</h2><p>Wpisz model, objaw albo oznaczenie układu i otwórz wyszukiwanie w wybranym źródle.</p></div>
-<div class="card"><h2>🧩 Atlas podzespołów</h2><p>Podstawowe elementy elektroniczne z opisem, pomiarem i typowymi uszkodzeniami.</p></div>
+<h1>Auto Diag PRO V2</h1>
+<p class="muted">Warsztatowy asystent prowadzący od objawu i danych pojazdu do kolejnych pomiarów, interpretacji wyniku oraz możliwej naprawy.</p>
+<div class="grid3">
+<div class="card"><div class="muted small">Obsługiwane marki startowe</div><div class="kpi" id="kpiBrands">0</div></div>
+<div class="card"><div class="muted small">Procedury</div><div class="kpi" id="kpiProcedures">0</div></div>
+<div class="card"><div class="muted small">Przypadki treningowe</div><div class="kpi" id="kpiTrainer">0</div></div>
 </div>
-<div class="note"><b>Ważne:</b> wyniki z Internetu traktuj jako pomoc diagnostyczną. Zawsze weryfikuj schematem, datasheetem i własnymi pomiarami.</div>
+<div class="card">
+<h2>Jak używać</h2>
+<div class="flow"><span>Marka</span><b>→</b><span>Model</span><b>→</b><span>Rocznik / silnik</span><b>→</b><span>Objaw / DTC</span><b>→</b><span>Pomiary</span><b>→</b><span>Wynik</span><b>→</b><span>Wniosek</span></div>
+</div>
+<div class="note"><b>Zasada:</b> aplikacja nie zakłada od razu uszkodzonego elementu. Najpierw prowadzi przez zasilania, masy, sygnały, parametry rzeczywiste i warunki pracy.</div>
+<div class="alert" style="margin-top:12px"><b>Bezpieczeństwo:</b> podczas pracy przy instalacji samochodowej nie zwieraj linii zasilających ani magistral komunikacyjnych. Układy SRS/airbag wymagają osobnych procedur bezpieczeństwa.</div>
 </section>
 
-
-<section id="autodiag" class="view">
-<h1>🚗 Auto Diag PRO</h1>
-<p class="muted">Wybierz samochód i objaw albo wpisz kod DTC. Asystent prowadzi od testu do testu i interpretuje wyniki pomiarów.</p>
+<section id="vehicle" class="view">
+<h1>🚗 Diagnoza po aucie</h1>
+<p class="muted">Wybierz pojazd i objaw. Procedura zostanie dobrana do typu układu i typowych warunków diagnostycznych.</p>
 <div class="card">
-<h2>1. Dane pojazdu</h2>
-<div class="toolbar"><select id="carBrand"></select><input id="carModel" placeholder="Model, np. Octavia"><input id="carYear" inputmode="numeric" placeholder="Rok"><input id="carEngine" placeholder="Silnik, np. 1.6 TDI"></div>
+<div class="grid">
+<div><label>Marka</label><select id="brandSel"></select></div>
+<div><label>Model</label><select id="modelSel"></select></div>
+<div><label>Rocznik</label><select id="yearSel"></select></div>
+<div><label>Silnik</label><select id="engineSel"></select></div>
 </div>
-<div class="card"><h2>2. Jak chcesz rozpocząć?</h2><div class="toolbar"><button class="primary" id="modeSymptom">Objaw</button><button class="secondary" id="modeDtc">Kod DTC</button><button class="secondary" id="modeModule">Moduł / CAN</button></div></div>
-<div id="autoStart"></div><div id="autoDiagBox"></div>
+<div style="margin-top:12px"><label>Objaw</label><select id="symptomSel"></select></div>
+<div class="toolbar"><input id="vehicleDtc" placeholder="Opcjonalnie kod DTC, np. P0335"><button class="primary" id="startVehicleDiag">Rozpocznij diagnozę</button></div>
+</div>
+<div id="vehicleDiagBox"></div>
+</section>
+
+<section id="dtc" class="view">
+<h1>🧾 Diagnoza po kodzie DTC</h1>
+<div class="card">
+<div class="toolbar"><input id="dtcInput" placeholder="np. P0401, P0335, P0299"><button class="primary" id="dtcSearchBtn">Analizuj kod</button></div>
+<div id="dtcResult"></div>
+</div>
 </section>
 
 
 <section id="dtcbase" class="view">
 <h1>📟 Baza kodów DTC</h1>
-<p class="muted">Wpisz kod OBD/DTC, np. P0301, P0420 lub U0100. Baza działa offline i pokazuje polski opis, grupę układu oraz kierunek dalszej diagnostyki.</p>
-<div class="card"><div class="toolbar"><input id="dtcBaseSearch" placeholder="Szukaj kodu lub opisu, np. P0171, sonda lambda, CAN"><select id="dtcBaseGroup"><option value="all">Wszystkie</option><option value="P">P — układ napędowy</option><option value="B">B — nadwozie</option><option value="C">C — podwozie</option><option value="U">U — komunikacja</option></select></div><div id="dtcBaseCount" class="muted small"></div><div id="dtcBaseList"></div></div>
-<div class="note"><b>Ważne:</b> DTC wskazuje wykryty problem, ale nie zawsze uszkodzony element. Przed wymianą części sprawdź zasilanie, masy, wiązkę, parametry bieżące i warunki zapisania błędu.</div>
-</section>
-
-<section id="diagnostics" class="view">
-<h1>🧭 Diagnostyka PRO</h1>
-<p class="muted">Wybierz urządzenie lub wpisz objaw. Prowadzenie od wejścia zasilania do bloku, w którym zanika prawidłowy sygnał.</p>
-<div class="danger"><b>⚠️ Bezpieczeństwo:</b> część pierwotna zasilaczy i urządzeń sieciowych może mieć ponad 325 V DC. Pomiary wykonuj odpowiednim sprzętem.</div>
-<div class="toolbar"><input id="diagSearch" placeholder="np. brak obrazu, nie włącza się, HDMI, ładowanie..."><select id="diagCat"></select></div>
-<div id="diagList"></div><div id="diagDetail"></div>
-</section>
-
-<section id="academy" class="view">
-<h1>🎓 Akademia Diagnostyki</h1>
-<p class="muted">Nauka lokalizacji usterek od podstaw do zaawansowanych przypadków. Każda lekcja kończy się krótkim testem.</p>
-<div class="academyTop">
-<div class="card"><h2>Twój postęp</h2><div id="academyProgressText" class="muted"></div><div class="progressWrap" style="margin-top:10px"><div id="academyProgressBar" class="progressBar"></div></div></div>
-<div class="card"><h2>🧪 Trener usterek</h2><p class="muted">Wybierz następny pomiar i sprawdź tok diagnostyczny.</p><button class="primary" id="startTrainerBtn">Uruchom trenera</button></div>
+<p class="muted">Samochodowa baza kodów OBD/DTC: P – układ napędowy, U – komunikacja, C – podwozie/ABS, B – nadwozie. Kody producenta mogą mieć inne znaczenie zależnie od marki i sterownika.</p>
+<div class="card">
+<div class="toolbar"><input id="dtcBaseSearch" placeholder="Wpisz kod lub opis, np. P0299, EGR, CAN, wypadanie zapłonu"><select id="dtcBaseGroup"><option value="all">Wszystkie grupy</option><option value="P">P – napęd/silnik/skrzynia</option><option value="U">U – komunikacja</option><option value="C">C – podwozie/ABS</option><option value="B">B – nadwozie</option></select></div>
+<div id="dtcBaseCount" class="muted small"></div>
 </div>
-<div class="toolbar"><input id="lessonSearch" placeholder="Szukaj: zwarcie, MOSFET, HDMI, BMS..."><select id="lessonCat"></select></div>
-<div id="lessonList" class="academyGrid"></div><div id="lessonDetail"></div><div id="trainerBox"></div>
+<div id="dtcBaseList"></div>
 </section>
 
-<section id="internet" class="view">
-<h1>🌐 Szukaj w Internecie</h1>
-<div class="card"><input id="webQuery" placeholder="np. Xbox One X brak HDMI, Samsung UE55 brak podświetlenia, TPS51225...">
-<div class="sourceBtns" style="margin-top:12px">
-<button class="secondary" data-search="google"><b>Google</b><br><span class="muted">Ogólne wyszukiwanie</span></button>
-<button class="secondary" data-search="youtube"><b>YouTube</b><br><span class="muted">Filmy serwisowe</span></button>
-<button class="secondary" data-search="ifixit"><b>iFixit</b><br><span class="muted">Poradniki napraw</span></button>
-<button class="secondary" data-search="elektroda"><b>Elektroda</b><br><span class="muted">Polskie forum</span></button>
-<button class="secondary" data-search="badcaps"><b>Badcaps</b><br><span class="muted">Forum elektroniki</span></button>
-<button class="secondary" data-search="datasheet"><b>Datasheet</b><br><span class="muted">Dokumentacja układów</span></button>
-</div></div>
-</section>
-
-<section id="atlas" class="view">
-<h1>🧩 Atlas podzespołów</h1>
-<div class="toolbar"><input id="compSearch" placeholder="Szukaj: MOSFET, kondensator, BIOS..."><select id="compCat"></select></div>
-<div id="compList"></div><div id="compDetail"></div>
-</section>
-
-<section id="datasheet" class="view">
-<h1>📄 Znajdź datasheet</h1>
-<div class="card"><p>Wpisz dokładne oznaczenie z obudowy elementu, np. <b>TPS51225</b>, <b>RT8243</b>, <b>25Q64</b>.</p>
-<input id="dsQuery" placeholder="Oznaczenie elementu">
-<div class="toolbar"><button class="primary" id="dsBtn">Szukaj datasheet</button><button class="secondary" id="googlePartBtn">Szukaj oznaczenia w Google</button></div>
+<section id="live" class="view">
+<h1>📊 Live Data – interpretacja</h1>
+<p class="muted">Wybierz parametr i wpisz odczyt. Moduł pokaże, jak interpretować wynik w kontekście diagnostycznym.</p>
+<div class="card">
+<div class="grid">
+<div><label>Parametr</label><select id="liveParam"></select></div>
+<div><label>Wartość</label><input id="liveValue" placeholder="np. 0, 250, 1.2"></div>
 </div>
+<div class="toolbar"><button class="primary" id="liveBtn">Interpretuj</button></div>
+<div id="liveResult"></div>
+</div>
+</section>
+
+<section id="trainer" class="view">
+<h1>🎓 Trener diagnostyki</h1>
+<p class="muted">Symulowane przypadki warsztatowe. Wybierasz kolejny krok i uczysz się toku lokalizacji usterki.</p>
+<div class="card"><button class="primary" id="trainerStart">Uruchom przypadek</button></div>
+<div id="trainerBox"></div>
+</section>
+
+<section id="library" class="view">
+<h1>📚 Baza procedur</h1>
+<div class="toolbar"><input id="libSearch" placeholder="Szukaj: nie odpala, CAN, P0401, alternator..."><select id="libCat"></select></div>
+<div id="libList"></div>
+<div id="libDetail"></div>
 </section>
 </main>
 </div>
@@ -151,155 +153,111 @@ input,select{width:100%;background:#0d1c2d;border:1px solid var(--border);color:
 'use strict';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function showView(id){
- document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
- const t=$(id); if(t)t.classList.add('active');
- document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.v===id));
-}
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.v===id))}
 document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.v)));
 
-const academyLessons=[
-{cat:'Podstawy',title:'Diagnostyka od zera',level:'Podstawowy',desc:'Uniwersalny tok myślenia: objaw → blok → pomiar → wniosek → potwierdzenie.',goals:['Oddzielić objaw od przyczyny','Wyznaczyć kolejne punkty pomiarowe','Nie wymieniać elementów bez potwierdzenia'],steps:['Zapisz dokładny objaw i warunki występowania.','Wykonaj oględziny płyty.','Sprawdź wejście zasilania i zwarcia do masy.','Podziel urządzenie na bloki funkcjonalne.','Znajdź pierwszy blok, w którym znika prawidłowy sygnał.','Po naprawie wykonaj test stabilności.'],quiz:{q:'Masz 19 V na gnieździe laptopa, ale za MOSFET-em wejściowym jest 0 V. Co jest najlepszym następnym krokiem?',a:['Wymienić CPU','Sprawdzić sterowanie bramki MOSFET-u i sygnały ACDET/ACOK','Przeprogramować BIOS'],ok:1,why:'Zasilanie zatrzymuje się na wejściowym kluczu, więc trzeba sprawdzić MOSFET i jego sterowanie.'}},
-{cat:'Zasilanie',title:'Urządzenie całkowicie martwe',level:'Podstawowy',desc:'Jak znaleźć miejsce, w którym zanika energia przed rozpoczęciem sekwencji startowej.',goals:['Sprawdzić wejście','Rozpoznać brak standby','Oddzielić zwarcie od braku sterowania'],steps:['Zmierz rezystancję głównych szyn do masy.','Sprawdź bezpiecznik i elementy ochronne.','Sprawdź napięcie przed i za kluczami wejściowymi.','Znajdź napięcie standby/always-on.','Sprawdź POWER i sygnały enable.'],quiz:{q:'Brak reakcji na POWER, ale 3,3 V standby jest prawidłowe. Co sprawdzić dalej?',a:['Sygnał przycisku POWER i reakcję EC/MCU','Głośnik','Podświetlenie'],ok:0,why:'Skoro standby działa, następny etap to komenda włączenia i reakcja układu sterującego.'}},
-{cat:'Zasilanie',title:'Zwarcie na płycie',level:'Średni',desc:'Bezpieczne wyszukiwanie zwartej szyny i elementu powodującego przeciążenie.',goals:['Zidentyfikować zwartą szynę','Dobrać napięcie wtrysku','Lokalizować termicznie'],steps:['Zmierz rezystancję na cewkach.','Ustal nominalne napięcie szyny.','Ustaw ograniczenie prądowe.','Wstrzykuj napięcie bezpieczne dla szyny.','Szukaj elementu termicznie.','Po usunięciu zwarcia sprawdź rezystancję ponownie.'],quiz:{q:'Czy zawsze można wstrzyknąć 5 V w zwartą szynę?',a:['Tak','Nie, napięcie musi być bezpieczne dla konkretnej szyny','Tak, jeśli prąd jest mały'],ok:1,why:'Zbyt wysokie napięcie może uszkodzić układy niskonapięciowe.'}},
-{cat:'Zasilanie',title:'Analiza poboru prądu',level:'Średni',desc:'Co mówi pobór 0 A, impuls, cykliczne starty i zbyt wysoki prąd.',goals:['Czytać przebieg poboru','Łączyć pobór z etapem startu','Rozróżniać zwarcie i zatrzymanie sekwencji'],steps:['Ustaw prawidłowe napięcie.','Zanotuj pobór przed POWER.','Obserwuj zmianę po POWER.','Porównaj zachowanie z pojawianiem się szyn.','Gwałtowny limit prądu sugeruje przeciążenie.','Krótki impuls sugeruje przerwaną sekwencję.'],quiz:{q:'Płyta bierze krótki impuls prądu i wraca do poboru standby. Najbardziej typowy kierunek?',a:['Brak warunku sekwencji startowej lub ochrona','Zawsze zwarty kondensator','Uszkodzony głośnik'],ok:0,why:'Krótki start zwykle oznacza, że sekwencja ruszyła, ale została przerwana.'}},
-{cat:'Zasilanie',title:'MOSFET w praktyce',level:'Średni',desc:'Jak sprawdzać klucze wejściowe, MOSFET-y przetwornic i sterowanie bramki.',goals:['Rozumieć VGS','Rozpoznać zwarcie D-S','Sprawdzić driver'],steps:['Sprawdź D-S i diodę pasożytniczą.','Zidentyfikuj N-MOS/P-MOS.','Zmierz S, D i G.','Policz VGS.','Jeśli VGS jest dobre a spadek duży, sprawdź tranzystor.','Jeśli VGS brak, badaj driver i enable.'],quiz:{q:'Dlaczego samo napięcie bramki względem masy może wprowadzać w błąd?',a:['Bo liczy się napięcie G-S','Bo bramka zawsze ma 0 V','Bo MOSFET nie ma źródła'],ok:0,why:'Stan MOSFET-u zależy od różnicy napięć bramka–źródło, czyli VGS.'}},
-{cat:'Zasilanie',title:'Przetwornice buck / boost',level:'Średni',desc:'VIN, EN, VCC, SW, FB i wyjście — kolejność diagnostyczna.',goals:['Czytać blok DC/DC','Sprawdzić warunki startu','Rozróżnić brak sterowania i przeciążenie'],steps:['Znajdź kontroler i datasheet.','Sprawdź VIN/VCC.','Sprawdź EN.','Sprawdź zwarcie na wyjściu.','Oscyloskopem sprawdź SW.','Sprawdź FB i dzielnik.'],quiz:{q:'VIN jest, EN jest, ale na SW nie ma impulsów. Co podejrzewać?',a:['Kontroler/driver lub aktywną ochronę','Zawsze cewkę','Port HDMI'],ok:0,why:'Przy spełnionych warunkach wejściowych brak SW kieruje do kontrolera, drivera lub protekcji.'}},
-{cat:'Zasilanie',title:'LDO i stabilizatory',level:'Podstawowy',desc:'Szybka diagnostyka stabilizatorów liniowych i małych szyn pomocniczych.',goals:['Rozpoznać IN/OUT/EN/GND','Sprawdzić przeciążenie','Ocenić dropout'],steps:['Zidentyfikuj piny.','Sprawdź VIN i GND.','Sprawdź EN.','Zmierz rezystancję VOUT do masy.','Jeśli VIN i EN są dobre, a VOUT brak, sprawdź LDO i obciążenie.'],quiz:{q:'VIN i EN są prawidłowe, VOUT = 0 V, a wyjście nie jest zwarte. Co najbardziej podejrzane?',a:['LDO lub jego połączenia','Głośnik','Kabel HDMI'],ok:0,why:'Spełniono podstawowe warunki pracy stabilizatora.'}},
-{cat:'Sekwencja',title:'Sekwencja startowa',level:'Zaawansowany',desc:'Standby → enable → główne szyny → reset → zegary → CPU/SoC → peryferia.',goals:['Czytać zależności','Znajdować pierwszy brak','Unikać chaotycznych pomiarów'],steps:['Zidentyfikuj always-on.','Sprawdź POWER.','Śledź enable i power-good.','Sprawdź reset i zegary.','Dopiero potem oceniaj firmware i CPU.'],quiz:{q:'Brakuje jednej głównej szyny CPU. Czy zaczynać od BIOS-u?',a:['Tak','Nie, najpierw znaleźć przyczynę braku szyny','Zawsze wymienić CPU'],ok:1,why:'Najpierw trzeba przywrócić brakujący warunek zasilania.'}},
-{cat:'Obraz',title:'Brak obrazu – uniwersalna metoda',level:'Średni',desc:'Jak rozdzielić problem z zasilaniem, generowaniem obrazu, transmisją i panelem.',goals:['Oddzielić obraz od podświetlenia','Sprawdzić tor sygnału','Wybrać właściwy blok'],steps:['Sprawdź czy urządzenie startuje.','Oddziel podświetlenie od treści obrazu.','Sprawdź zasilania sekcji obrazu.','Sprawdź HPD/EDID/clock/data.','Sprawdź reset i zegary retimera/scalera/T-CON.'],quiz:{q:'TV ma dźwięk, a po oświetleniu ekranu latarką widać treść. Gdzie szukać?',a:['W podświetleniu LED i jego driverze','W tunerze DVB','W głośnikach'],ok:0,why:'Obraz jest generowany, ale brakuje podświetlenia.'}},
-{cat:'USB-C',title:'USB-C / Power Delivery',level:'Zaawansowany',desc:'VBUS, CC1/CC2, kontroler PD i klucze wejściowe.',goals:['Rozumieć rolę CC','Sprawdzić negocjację','Odróżnić ładowarkę od płyty'],steps:['Sprawdź złącze i zwarcie VBUS.','Zmierz CC1/CC2.','Sprawdź 5 V VBUS.','Sprawdź negocjację PD.','Sprawdź MOSFET-y VBUS.','Potwierdź napięcie wejściowe chargera.'],quiz:{q:'Na USB-C stale jest 5 V, a urządzenie oczekuje 20 V. Co badać?',a:['Negocjację PD, CC i kontroler PD','Głośnik','RAM'],ok:0,why:'Wyższe napięcie pojawia się po prawidłowej negocjacji PD.'}},
-{cat:'Firmware',title:'BIOS / SPI – diagnostyka',level:'Zaawansowany',desc:'Kiedy firmware jest podejrzany i jak nie pomylić go z brakiem zasilania.',goals:['Sprawdzić zasilanie SPI','Obserwować CS/CLK/DATA','Zweryfikować wsad'],steps:['Potwierdź szyny, resety i zegary.','Sprawdź zasilanie SPI.','Obserwuj CS/CLK/DATA.','Brak aktywności kieruje do wcześniejszych warunków.','Zachowaj kopię wsadu przed programowaniem.'],quiz:{q:'Pamięć SPI ma zasilanie, ale CLK i CS nigdy się nie pojawiają. Co to znaczy?',a:['Nie dowodzi uszkodzenia kości; sprawdź wcześniejsze warunki startu','Na pewno uszkodzony BIOS','Na pewno zwarcie USB'],ok:0,why:'Kontroler mógł nie dojść do etapu odczytu firmware.'}},
-{cat:'Pomiary',title:'Oscyloskop w diagnostyce',level:'Średni',desc:'PWM, ripple, zegary, resety i magistrale.',goals:['Dobierać masę i skalę','Rozróżniać DC od przebiegu','Wykrywać niestabilność'],steps:['Ustal bezpieczny punkt odniesienia.','Do ripple użyj krótkiej masy sondy.','Dla PWM dobierz podstawę czasu.','Dla resetu użyj wyzwalania.','Nie podłączaj masy oscyloskopu do strony gorącej bez właściwej metody.'],quiz:{q:'Co jest szczególnie niebezpieczne przy badaniu strony pierwotnej SMPS zwykłym oscyloskopem?',a:['Masa sondy może być połączona z PE i spowodować zwarcie','Za mały ekran','Brak Wi-Fi'],ok:0,why:'Masa wielu oscyloskopów stołowych jest uziemiona.'}},
-{cat:'Pomiary',title:'Multimetr – interpretacja wyników',level:'Podstawowy',desc:'Napięcie, rezystancja, tryb diody i ciągłość jako narzędzia decyzyjne.',goals:['Nie mylić niskiej rezystancji ze zwarciem','Używać trybu diody','Porównywać linie'],steps:['Odłącz zasilanie przed pomiarem rezystancji.','Oceniaj rezystancję w kontekście szyny.','Tryb diody wykorzystuj porównawczo.','Mierz napięcie względem właściwej masy.','Nie oceniaj elementu z jednego pomiaru in-circuit.'],quiz:{q:'Czy 1–2 Ω na rdzeniu CPU automatycznie oznacza zwarcie?',a:['Tak','Nie, szyny rdzeni mają naturalnie niską rezystancję','Tylko w telewizorze'],ok:1,why:'Rdzenie pracują przy niskim napięciu i dużym prądzie, więc rezystancja może być bardzo mała.'}},
-{cat:'Naprawy',title:'Naprawa po zalaniu',level:'Średni',desc:'Od odłączenia zasilania przez czyszczenie do odbudowy skorodowanych połączeń.',goals:['Zatrzymać korozję','Nie uruchamiać mokrej płyty','Zweryfikować linie'],steps:['Odłącz baterię/zasilanie.','Wykonaj oględziny.','Usuń osady i wysusz.','Sprawdź zwarcia.','Napraw skorodowane pady i ścieżki.','Wykonaj test długotrwały.'],quiz:{q:'Najgorszy pierwszy krok po świeżym zalaniu elektroniki?',a:['Wielokrotnie próbować ją włączać','Odłączyć zasilanie','Obejrzeć płytę'],ok:0,why:'Próby uruchomienia zwiększają ryzyko zwarć i elektrolizy.'}},
-{cat:'Naprawy',title:'Po przepięciu / odwrotnej polaryzacji',level:'Średni',desc:'Bezpiecznik, TVS, MOSFET-y i dalsze przetwornice.',goals:['Sprawdzić ochronę','Nie kończyć na bezpieczniku','Ocenić wtórne uszkodzenia'],steps:['Sprawdź zwarcie wejścia i TVS.','Sprawdź bezpiecznik i MOSFET-y.','Odseparuj uszkodzony blok.','Podaj zasilanie z limitem.','Sprawdź dalsze przetwornice.'],quiz:{q:'Spalony bezpiecznik po przepięciu — czy wystarczy go wymienić?',a:['Tak','Nie, trzeba znaleźć przyczynę i sprawdzić dalsze stopnie','Zawsze wstawić większy'],ok:1,why:'Bezpiecznik jest często skutkiem zwarcia, a nie pierwotną przyczyną.'}},
-{cat:'Usterki trudne',title:'Usterki termiczne',level:'Średni',desc:'Gdy urządzenie działa tylko zimne albo tylko po rozgrzaniu.',goals:['Stosować grzanie/chłodzenie','Powiązać temperaturę z elementem','Unikać przypadkowego reflow'],steps:['Odtwórz usterkę.','Chłodź lub ogrzewaj małe obszary.','Mierz równolegle zasilania i zegary.','Traktuj reakcję BGA jako wskazówkę.','Napraw przyczynę, nie objaw.'],quiz:{q:'Czy chwilowe ożywienie układu po podgrzaniu BGA dowodzi na 100% uszkodzenia kulek?',a:['Tak','Nie, to tylko wskazówka','Tylko w konsolach'],ok:1,why:'Temperatura wpływa również na sam układ i elementy otoczenia.'}},
-{cat:'Usterki trudne',title:'Usterki okresowe',level:'Zaawansowany',desc:'Jak łapać awarię, która znika podczas pomiaru albo występuje losowo.',goals:['Rejestrować warunki','Używać min/max i oscyloskopu','Testować mechanicznie i termicznie'],steps:['Ustal wzorzec występowania.','Rejestruj krytyczne szyny.','Sprawdź złącza i luty.','Stosuj selektywne chłodzenie/grzanie.','Porównaj power-good, reset i zegary przed awarią.'],quiz:{q:'Najlepsza strategia przy losowym restarcie?',a:['Wymieniać losowe części','Rejestrować zasilania/reset i szukać korelacji','Wyłączyć zabezpieczenia'],ok:1,why:'Rejestracja pokazuje, który sygnał znika pierwszy.'}},
-{cat:'Telefony',title:'Telefon nie ładuje',level:'Średni',desc:'Port → VBUS → ochrona → kontroler USB/PD → charger → bateria.',goals:['Sprawdzić port i CC','Ocenić charger','Rozdzielić baterię od płyty'],steps:['Sprawdź port.','Zmierz VBUS i pobór.','Sprawdź zabezpieczenie VBUS.','Dla USB-C sprawdź CC.','Sprawdź baterię i NTC.','Sprawdź wejście/wyjście chargera.'],quiz:{q:'Ładowarka podaje 5 V, ale na płycie za zabezpieczeniem VBUS jest 0 V. Gdzie szukać?',a:['W zabezpieczeniu/kluczu toru VBUS i jego sterowaniu','W aparacie','W głośniku'],ok:0,why:'Napięcie zanika dokładnie na torze wejściowym VBUS.'}},
-{cat:'BMS',title:'BMS / Li-ion',level:'Zaawansowany',desc:'Sekwencja cel, balansowanie, MOSFET-y i blokady ochronne.',goals:['Mierzyć każdą celę','Sprawdzać kolejność B- B1...B+','Rozumieć blokadę MOSFET-ów'],steps:['Zmierz wszystkie cele osobno.','Sprawdź przewody balansujące.','Porównaj napięcia cel.','Sprawdź MOSFET-y CHG/DSG.','Sprawdź NTC i warunki ochrony.','Po naprawie obserwuj balans podczas ładowania.'],quiz:{q:'Jedna cela ma 3,1 V, a pozostałe około 4,0 V. BMS blokuje wyjście. Co zrobić najpierw?',a:['Sprawdzić stan tej celi i wyrównać/naprawić pakiet zgodnie z bezpieczną procedurą','Zewrzeć MOSFET-y BMS','Podnieść napięcie ładowarki'],ok:0,why:'Duża nierównowaga cel może prawidłowo uruchomić ochronę BMS.'}},
-{cat:'Konsole',title:'HDMI / retimer w konsoli',level:'Zaawansowany',desc:'Port HDMI, ESD, HPD, EDID, retimer i zasilania toru obrazu.',goals:['Sprawdzić port i diody ESD','Zweryfikować zasilania retimera','Porównać wejście i wyjście sygnału'],steps:['Sprawdź port i piny.','Zmierz diody ESD w trybie diody.','Sprawdź HPD i 5 V HDMI.','Sprawdź zasilania retimera.','Sprawdź zegar/reset retimera.','Porównaj aktywność sygnału przed i za układem.'],quiz:{q:'Konsola startuje normalnie, ale brak HDMI. 5 V i HPD są obecne. Co dalej?',a:['Sprawdzić zasilania, reset i zegar retimera oraz tor TMDS','Wymienić zasilacz sieciowy','Wymienić wentylator'],ok:0,why:'Podstawowe warunki portu są obecne, więc trzeba wejść głębiej w tor HDMI.'}},
-{cat:'AGD',title:'AGD – silnik, pompa, grzałka',level:'Średni',desc:'Jak rozdzielić usterkę elementu wykonawczego od sterowania triakiem/przekaźnikiem.',goals:['Sprawdzić obciążenie','Sprawdzić element wykonawczy','Sprawdzić sterowanie'],steps:['Odłącz zasilanie i zmierz obciążenie.','Sprawdź przewody i złącza.','Sprawdź triak/przekaźnik.','Sprawdź sygnał sterujący.','Sprawdź czujniki warunkujące start.'],quiz:{q:'Pompa jest sprawna na stole, ale w urządzeniu nie dostaje napięcia. Co sprawdzać?',a:['Sterowanie przekaźnika/triaka oraz warunki startu','Od razu wymienić pompę','Zwiększyć bezpiecznik'],ok:0,why:'Sprawny element wykonawczy kieruje diagnostykę do toru sterowania.'}}
+const vehicles={
+'Volkswagen':{
+ 'Golf':['2004-2013|1.9 TDI','2008-2016|2.0 TDI','2009-2017|1.4 TSI'],
+ 'Passat':['2005-2014|2.0 TDI','2010-2018|1.6 TDI','2005-2014|1.8 TSI']
+},
+'Skoda':{
+ 'Octavia':['2004-2013|1.9 TDI','2008-2017|1.6 TDI','2008-2018|2.0 TDI','2012-2020|1.4 TSI'],
+ 'Fabia':['2007-2014|1.4 MPI','2007-2014|1.6 TDI','2014-2021|1.0 TSI']
+},
+'Audi':{
+ 'A3':['2003-2013|1.9 TDI','2008-2020|2.0 TDI','2012-2020|1.4 TFSI'],
+ 'A4':['2004-2015|2.0 TDI','2008-2016|1.8 TFSI']
+},
+'Seat':{'Leon':['2005-2013|1.9 TDI','2008-2020|2.0 TDI','2012-2020|1.4 TSI']},
+'Ford':{'Focus':['2004-2018|1.6 TDCi','2011-2019|1.0 EcoBoost','2004-2012|1.6 benzyna'],'Mondeo':['2007-2014|2.0 TDCi']},
+'Opel':{'Astra':['2004-2015|1.7 CDTI','2009-2018|1.4 Turbo','2004-2014|1.6 benzyna'],'Insignia':['2008-2017|2.0 CDTI']},
+'Peugeot':{'308':['2007-2021|1.6 HDi','2013-2021|1.2 PureTech'],'407':['2004-2011|2.0 HDi']},
+'Citroen':{'C4':['2004-2018|1.6 HDi','2010-2020|1.2 PureTech'],'Berlingo':['2008-2018|1.6 HDi']},
+'Renault':{'Megane':['2008-2016|1.5 dCi','2008-2016|1.6 benzyna'],'Scenic':['2009-2016|1.5 dCi']},
+'Toyota':{'Corolla':['2007-2018|1.6 benzyna','2007-2016|2.0 D-4D'],'Avensis':['2009-2018|2.0 D-4D']},
+'BMW':{'Seria 3':['2005-2012|2.0d','2012-2019|2.0d','2005-2012|2.0 benzyna']},
+'Mercedes':{'Klasa C':['2007-2014|2.2 CDI','2014-2021|2.1 CDI'],'Sprinter':['2006-2018|2.2 CDI']},
+'Fiat':{'Ducato':['2006-2014|2.3 Multijet','2014-2021|2.3 Multijet'],'Punto':['2005-2014|1.3 Multijet','2005-2014|1.4 benzyna']}
+};
+
+const symptoms=[
+'Kręci, ale nie odpala',
+'Nie kręci rozrusznikiem',
+'Gaśnie podczas jazdy',
+'Brak mocy',
+'Szarpie / wypadają zapłony',
+'Wysokie spalanie',
+'Problem z ładowaniem',
+'Kontrolka ABS/ESP',
+'Brak komunikacji ze sterownikiem',
+'DPF często się zapycha',
+'Klimatyzacja nie chłodzi'
 ];
 
-const trainerCases=[
-{title:'Laptop: brak napięcia za MOSFET-em wejściowym',sym:'Na gnieździe jest 19 V. Za pierwszym MOSFET-em jest 0 V.',choices:[
-{t:'Sprawdź napięcia S, D, G i wylicz VGS',ok:true,r:'Właściwie. Najpierw ustal, czy MOSFET jest zamknięty z powodu braku sterowania, czy sam jest uszkodzony.'},
-{t:'Wymień BIOS',ok:false,r:'Za wcześnie. Zasilanie nie przechodzi nawet przez tor wejściowy.'},
-{t:'Wymień CPU',ok:false,r:'CPU nie jest pierwszym podejrzanym przy braku zasilania za kluczem wejściowym.'}]},
-{title:'Płyta: zwarcie 3,3 V',sym:'Rezystancja szyny 3,3 V do masy jest bardzo niska, zasilacz laboratoryjny wchodzi w limit.',choices:[
-{t:'Ustal bezpieczne napięcie wtrysku i lokalizuj termicznie element pobierający prąd',ok:true,r:'Tak. Kontrolowany wtrysk i termika to właściwy kierunek.'},
-{t:'Podaj od razu 12 V',ok:false,r:'Niebezpieczne. Możesz uszkodzić wszystkie układy zasilane z 3,3 V.'},
-{t:'Wymień kontroler PWM bez pomiarów',ok:false,r:'Kontroler może tylko reagować na zwarcie obciążenia.'}]},
-{title:'TV: dźwięk jest, ekran czarny',sym:'TV reaguje, jest dźwięk. Latarką widać bardzo słaby obraz.',choices:[
-{t:'Sprawdź driver LED, napięcie LED i listwy podświetlenia',ok:true,r:'Tak. Treść obrazu istnieje, więc problem dotyczy podświetlenia.'},
-{t:'Wymień płytę główną',ok:false,r:'Objaw nie wskazuje od razu na mainboard.'},
-{t:'Przeprogramuj SPI',ok:false,r:'Najpierw badaj podświetlenie, bo test latarki już zawęził usterkę.'}]},
-{title:'USB-C: tylko 5 V',sym:'Laptop po USB-C ma 5 V, ale nie przechodzi na 20 V i nie ładuje.',choices:[
-{t:'Sprawdź CC1/CC2 i aktywność kontrolera PD',ok:true,r:'Tak. Brak profilu 20 V wskazuje na negocjację PD lub jej warunki.'},
-{t:'Wymień baterię bez pomiarów',ok:false,r:'Najpierw trzeba ustalić, dlaczego nie dochodzi do negocjacji wyższego napięcia.'},
-{t:'Sprawdź głośnik',ok:false,r:'Nie ma związku z negocjacją zasilania USB-C.'}]},
-{title:'Konsola: brak HDMI',sym:'Konsola uruchamia się, ale monitor nie wykrywa sygnału. 5 V HDMI i HPD są obecne.',choices:[
-{t:'Sprawdź zasilania, reset i zegar retimera oraz aktywność toru TMDS',ok:true,r:'To właściwy następny etap po sprawdzeniu portu i podstawowych sygnałów.'},
-{t:'Wymień zasilacz sieciowy',ok:false,r:'Konsola uruchamia się, więc brak HDMI trzeba zawęzić w torze wideo.'},
-{t:'Wymień wentylator',ok:false,r:'Brak związku z wykrywaniem HDMI.'}]},
-{title:'BMS: jedna cela odstaje',sym:'W pakiecie 7S sześć cel ma około 4,0 V, jedna ma 3,1 V. BMS blokuje rozładowanie.',choices:[
-{t:'Sprawdź tę celę, połączenia balansujące i stan pakietu przed dalszym ładowaniem',ok:true,r:'Tak. Duża nierównowaga może uruchomić ochronę i wskazywać słabą celę lub problem połączenia.'},
-{t:'Zewrzyj MOSFET-y wyjściowe BMS',ok:false,r:'To omija ochronę i może być niebezpieczne.'},
-{t:'Podaj wyższe napięcie niż dopuszczalne',ok:false,r:'To grozi przeładowaniem pozostałych cel.'}]}
-];
-
-const stateKey='elektronikDiagV63Academy';
-function loadState(){try{return JSON.parse(localStorage.getItem(stateKey)||'{}')}catch(e){return {}}}
-function saveState(s){try{localStorage.setItem(stateKey,JSON.stringify(s))}catch(e){} updateProgress()}
-const lessonCats=['Wszystkie',...new Set(academyLessons.map(x=>x.cat))];
-$('lessonCat').innerHTML=lessonCats.map(c=>'<option>'+esc(c)+'</option>').join('');
-
-function updateProgress(){
- const s=loadState(),done=academyLessons.filter(x=>s[x.title]?.done).length,pct=Math.round(done/academyLessons.length*100);
- $('academyProgressText').textContent='Ukończone lekcje: '+done+' / '+academyLessons.length+' • '+pct+'%';
- $('academyProgressBar').style.width=pct+'%';
-}
-function renderLessons(){
- const q=$('lessonSearch').value.toLowerCase().trim(),cat=$('lessonCat').value,s=loadState();
- const arr=academyLessons.filter(x=>(cat==='Wszystkie'||x.cat===cat)&&JSON.stringify(x).toLowerCase().includes(q));
- $('lessonList').innerHTML=arr.map(x=>'<div class="card lessonCard" data-title="'+encodeURIComponent(x.title)+'"><span class="check">'+(s[x.title]?.done?'✅':'⬜')+'</span><span class="badge">'+esc(x.cat)+'</span><div class="lessonMeta"><span class="badge">'+esc(x.level)+'</span></div><h2>'+esc(x.title)+'</h2><p class="muted">'+esc(x.desc)+'</p></div>').join('')||'<p class="muted">Brak lekcji.</p>';
- document.querySelectorAll('.lessonCard').forEach(el=>el.addEventListener('click',()=>openLesson(decodeURIComponent(el.dataset.title))));
- updateProgress();
-}
-function openLesson(title){
- const x=academyLessons.find(v=>v.title===title); if(!x)return;
- $('trainerBox').innerHTML='';
- $('lessonDetail').innerHTML='<div class="detailBox"><button class="secondary" id="backLessons">← Wróć do lekcji</button><span class="badge">'+esc(x.cat)+'</span><span class="badge">'+esc(x.level)+'</span><h2>'+esc(x.title)+'</h2><p>'+esc(x.desc)+'</p><h3>Cele lekcji</h3><p>'+x.goals.map(g=>'• '+esc(g)).join('<br>')+'</p><h3>Procedura krok po kroku</h3>'+x.steps.map((s,i)=>'<div class="lessonStep"><div class="num">'+(i+1)+'</div><div class="step">'+esc(s)+'</div></div>').join('')+'<h3 style="margin-top:18px">Quiz</h3><div class="result"><b>'+esc(x.quiz.q)+'</b></div><div id="quizAnswers">'+x.quiz.a.map((a,i)=>'<button class="quizOpt" data-answer="'+i+'">'+esc(a)+'</button>').join('')+'</div><div id="quizExplain"></div></div>';
- $('lessonList').style.display='none';
- $('backLessons').addEventListener('click',()=>{ $('lessonDetail').innerHTML=''; $('lessonList').style.display='grid'; });
- document.querySelectorAll('#quizAnswers .quizOpt').forEach(btn=>btn.addEventListener('click',()=>answerQuiz(x,Number(btn.dataset.answer))));
- window.scrollTo({top:0,behavior:'smooth'});
-}
-function answerQuiz(x,i){
- document.querySelectorAll('#quizAnswers .quizOpt').forEach((b,j)=>{b.disabled=true;if(j===x.quiz.ok)b.classList.add('good');else if(j===i)b.classList.add('wrong')});
- const ok=i===x.quiz.ok;
- $('quizExplain').innerHTML='<div class="result"><b>'+(ok?'✅ Dobrze':'❌ Nie tym razem')+'</b><br>'+esc(x.quiz.why)+'</div>';
- if(ok){const s=loadState();s[x.title]={done:true,score:1,updated:Date.now()};saveState(s);}
-}
-let trainerIndex=0;
-function renderTrainer(){
- const c=trainerCases[trainerIndex%trainerCases.length];
- $('lessonDetail').innerHTML=''; $('lessonList').style.display='grid';
- $('trainerBox').innerHTML='<div class="detailBox"><div class="toolbar"><button class="secondary" id="closeTrainer">Zamknij trenera</button><button class="secondary" id="nextTrainer">Inny przypadek</button></div><span class="badge">Przypadek '+(trainerIndex%trainerCases.length+1)+'/'+trainerCases.length+'</span><h2>🧪 '+esc(c.title)+'</h2><div class="result"><b>Objaw:</b> '+esc(c.sym)+'</div><h3 style="margin-top:14px">Jaki powinien być następny krok?</h3><div id="trainerChoices">'+c.choices.map((ch,i)=>'<button class="secondary trainerChoice" data-choice="'+i+'">'+esc(ch.t)+'</button>').join('')+'</div><div id="trainerResult"></div></div>';
- $('closeTrainer').addEventListener('click',()=>{$('trainerBox').innerHTML=''});
- $('nextTrainer').addEventListener('click',()=>{trainerIndex++;renderTrainer()});
- document.querySelectorAll('#trainerChoices .trainerChoice').forEach(btn=>btn.addEventListener('click',()=>trainerAnswer(c,Number(btn.dataset.choice),btn)));
- $('trainerBox').scrollIntoView({behavior:'smooth',block:'start'});
-}
-function trainerAnswer(c,i,btn){
- const ch=c.choices[i];
- document.querySelectorAll('#trainerChoices button').forEach(b=>b.disabled=true);
- btn.style.borderColor=ch.ok?'#57d38c':'#ff7a7a';
- $('trainerResult').innerHTML='<div class="result"><b>'+(ch.ok?'✅ Właściwy kierunek':'❌ Lepszy będzie inny krok')+'</b><br>'+esc(ch.r)+'</div>';
-}
-$('startTrainerBtn').addEventListener('click',()=>{trainerIndex=0;renderTrainer()});
-$('lessonSearch').addEventListener('input',renderLessons);$('lessonCat').addEventListener('change',renderLessons);
-
-
-const carBrands=['Wybierz markę','Audi','BMW','Citroën','Dacia','Fiat','Ford','Honda','Hyundai','Jaguar','Kia','Mazda','Mercedes-Benz','Nissan','Opel','Peugeot','Renault','Seat','Škoda','Toyota','Volkswagen','Volvo','Inna'];
-$('carBrand').innerHTML=carBrands.map(x=>'<option>'+esc(x)+'</option>').join('');
-const autoCases=[
-{id:'nostart-crank',group:'Rozruch',name:'Rozrusznik kręci, silnik nie odpala',tags:'kręci nie odpala paliwo zapłon rpm czujnik wału',steps:[
- {q:'Zmierz napięcie akumulatora podczas rozruchu.',type:'number',unit:'V',min:9.6,ok:'Napięcie podczas rozruchu jest wystarczające. Sprawdź teraz obroty silnika w danych bieżących ECU.',bad:'Napięcie jest za niskie. Sprawdź akumulator, klemy, masę silnika, przewód plusowy i pobór prądu rozrusznika.'},
- {q:'Jakie obroty RPM pokazuje tester podczas kręcenia?',type:'number',unit:'rpm',min:120,ok:'ECU widzi obrót wału. Następnie sprawdź ciśnienie paliwa / sterowanie wtryskiem oraz synchronizację.',bad:'Brak lub zbyt mały sygnał RPM. Sprawdź czujnik położenia wału, jego zasilanie/masę, przewody i koło sygnałowe.'},
- {q:'Czy w danych bieżących jest synchronizacja wał–wałek?',type:'yesno',yes:'Synchronizacja jest. Przejdź do paliwa, wtrysku i zapłonu.',no:'Brak synchronizacji. Sprawdź czujnik wałka, rozrząd mechaniczny, koła sygnałowe i instalację.'},
- {q:'Czy ciśnienie paliwa podczas rozruchu osiąga wartość wymaganą przez sterownik?',type:'yesno',yes:'Paliwo jest prawdopodobnie dostępne. Sprawdź sterowanie wtryskiwaczy / iskrę w benzynie oraz blokadę immobilizera.',no:'Diagnozuj układ paliwowy: zasilanie pompy, filtr, pompę niskiego/wysokiego ciśnienia, regulator i przelewy wtryskiwaczy.'}
+const procedures=[
+{cat:'Rozruch',title:'Kręci, ale nie odpala',tags:'P0335 P0340 paliwo rozruch',intro:'Najpierw ustal, czy ECU widzi obrót silnika i czy spełnione są podstawowe warunki rozruchu.',steps:[
+{q:'Czy podczas rozruchu tester pokazuje obroty silnika powyżej około 150 rpm?',yes:1,no:'Brak sygnału obrotów. Sprawdź czujnik wału, jego zasilanie/masę/sygnał, przewody oraz koło impulsowe. DTC P0335/P0336 wzmacnia ten kierunek.'},
+{q:'Czy synchronizacja wał/wałek jest potwierdzona w Live Data?',yes:2,no:'Sprawdź czujnik wałka, rozrząd mechaniczny i korelację CKP/CMP. Przy przestawionym rozrządzie silnik może kręcić bez startu.'},
+{q:'Czy ciśnienie paliwa podczas rozruchu osiąga wymagane minimum?',yes:3,no:'Diagnozuj zasilanie paliwem: pompę wstępną, filtr, regulator, pompę wysokiego ciśnienia, przelewy wtryskiwaczy i czujnik ciśnienia.'},
+{q:'Czy immobilizer pozwala na rozruch / status autoryzacji jest prawidłowy?',yes:4,no:'Sprawdź klucz, antenę immobilizera, komunikację z ECU/BCM oraz kody błędów immobilizera.'},
+{q:'Czy są impulsy wtrysku i zapłonu / sterowania wtryskiwaczami?',yes:'Jeśli podstawowe warunki są spełnione, sprawdź kompresję, fazy rozrządu, jakość paliwa i mechanikę silnika.',no:'Sprawdź zasilania ECU, masy, przekaźnik główny, sygnały enable oraz warunki blokujące wtrysk.'}
 ]},
-{id:'starts-stalls',group:'Rozruch',name:'Odpala i po chwili gaśnie',tags:'odpala gaśnie immobilizer paliwo',steps:[
- {q:'Czy kontrolka immobilizera zachowuje się nieprawidłowo lub tester pokazuje blokadę rozruchu?',type:'yesno',yes:'Sprawdź klucz/transponder, pętlę anteny, synchronizację immobilizera z ECU i błędy BCM/IMMO.',no:'Przejdź do zasilania ECU i układu paliwowego.'},
- {q:'Czy po zgaśnięciu ECU nadal ma zasilanie +30, +15 i prawidłowe masy?',type:'yesno',yes:'Zasilanie ECU pozostaje. Sprawdź ciśnienie paliwa i sygnały czujników po rozruchu.',no:'Szukaj zaniku na przekaźniku głównym, stacyjce, skrzynce bezpieczników, masach lub wiązce.'}
+{cat:'Rozruch',title:'Nie kręci rozrusznikiem',tags:'starter rozrusznik przekaźnik',intro:'Rozdziel problem na zasilanie rozrusznika, sterowanie elektromagnesu i blokady logiczne.',steps:[
+{q:'Czy akumulator ma prawidłowe napięcie i nie spada nadmiernie przy próbie rozruchu?',yes:1,no:'Naładuj/sprawdź akumulator, klemy, masę silnika i przewód plusowy.'},
+{q:'Czy na zacisku sterującym elektromagnesu pojawia się napięcie podczas START?',yes:'Jeśli napięcie sterujące jest prawidłowe, sprawdź rozrusznik, elektromagnes, przewód B+ i masę silnika.',no:2},
+{q:'Czy sterownik widzi pozycję START / P-N / sprzęgło i autoryzację immobilizera?',yes:'Sprawdź przekaźnik rozrusznika, bezpieczniki, okablowanie sterujące i wyjście ECU/BCM.',no:'Znajdź brakujący warunek: czujnik sprzęgła, selektor P/N, stacyjkę, immobilizer lub komunikację CAN.'}
 ]},
-{id:'nomodule',group:'Sieć CAN',name:'Brak komunikacji z jednym modułem',tags:'can brak komunikacji u0100 ecu abs bcm airbag',steps:[
- {q:'Czy pozostałe sterowniki komunikują się prawidłowo?',type:'yesno',yes:'Problem jest lokalny dla modułu. Sprawdź jego bezpieczniki, +30/+15, masy i odcinek CAN.',no:'Możliwa awaria całej magistrali lub gateway. Zacznij od rezystancji CAN na złączu diagnostycznym.'},
- {q:'Przy wyłączonym zapłonie zmierz rezystancję między CAN-H i CAN-L.',type:'number',unit:'Ω',min:54,max:66,ok:'Około 60 Ω jest prawidłowe. Sprawdź zasilanie konkretnego modułu i sygnały CAN oscyloskopem.',bad:'Poza zakresem ~60 Ω. Około 120 Ω sugeruje brak jednego terminatora; blisko 0 Ω zwarcie. Izoluj odgałęzienia/moduły.'}
+{cat:'Silnik',title:'Brak mocy – diesel/benzyna turbo',tags:'P0299 turbo boost MAF MAP',intro:'Najpierw porównaj żądane i rzeczywiste doładowanie oraz ilość powietrza.',steps:[
+{q:'Czy rzeczywiste ciśnienie doładowania pod obciążeniem nadąża za wartością zadaną?',yes:1,no:'Sprawdź szczelność dolotu, intercooler, przewody, sterowanie wastegate/VNT, podciśnienie i samą turbosprężarkę.'},
+{q:'Czy MAF/MAP pokazują wiarygodne wartości i reagują na obciążenie?',yes:2,no:'Sprawdź czujnik, zasilanie 5 V, masę, sygnał i zanieczyszczenie przepływomierza.'},
+{q:'Czy EGR osiąga pozycję zadaną i nie pozostaje otwarty pod obciążeniem?',yes:'Sprawdź paliwo, DPF/katalizator, zapłon/wtrysk i kompresję.',no:'Sprawdź zawór EGR, napęd, kanały i sterowanie.'}
 ]},
-{id:'charging',group:'Zasilanie',name:'Brak lub słabe ładowanie akumulatora',tags:'alternator ładowanie akumulator 12v 14v',steps:[
- {q:'Zmierz napięcie na akumulatorze przy pracującym silniku.',type:'number',unit:'V',min:13.4,max:15.2,ok:'Napięcie ładowania jest w typowym zakresie. Sprawdź tętnienia AC i spadki napięć pod obciążeniem.',bad:'Ładowanie jest poza typowym zakresem. Sprawdź pasek, przewód B+, masę, bezpiecznik główny, sterowanie LIN/DFM i alternator.'},
- {q:'Zmierz spadek napięcia między B+ alternatora a plusem akumulatora pod obciążeniem.',type:'number',unit:'V',max:.3,ok:'Spadek na przewodzie dodatnim jest mały.',bad:'Za duży spadek. Sprawdź połączenia, bezpiecznik wysokoprądowy i przewód B+.'}
+{cat:'Zapłon',title:'Wypadanie zapłonu / szarpanie',tags:'P0300 P0301 P0302 misfire',intro:'Ustal cylinder i sprawdź, czy usterka podąża za cewką, świecą lub wtryskiwaczem.',steps:[
+{q:'Czy licznik misfire wskazuje konkretny cylinder?',yes:1,no:'Jeśli wypadają różne cylindry, sprawdź paliwo, ciśnienie, lewe powietrze, MAF/MAP i zasilanie zapłonu.'},
+{q:'Czy po zamianie cewki lub świecy błąd przenosi się na inny cylinder?',yes:'Uszkodzony element zapłonu jest bardzo prawdopodobny. Potwierdź pomiarem i wymień.',no:2},
+{q:'Czy wtryskiwacz danego cylindra działa i ma prawidłowe sterowanie?',yes:'Sprawdź kompresję, szczelność zaworów i mechanikę cylindra.',no:'Sprawdź wtryskiwacz, wiązkę, zasilanie i driver ECU.'}
 ]},
-{id:'misfire',group:'Silnik',name:'Nierówna praca / wypadanie zapłonu',tags:'p0300 p0301 p0302 p0303 p0304 misfire nierówno',steps:[
- {q:'Czy wypadanie zapłonu dotyczy jednego cylindra?',type:'yesno',yes:'Zamień cewkę/świecę/wtryskiwacz między cylindrami i obserwuj czy błąd się przeniesie.',no:'Sprawdź wspólne przyczyny: paliwo, ciśnienie, dolot, MAF/MAP, EGR, synchronizację i kompresję.'},
- {q:'Czy po zamianie elementu błąd przeniósł się na inny cylinder?',type:'yesno',yes:'Element przeniesiony jest bardzo prawdopodobną przyczyną. Potwierdź pomiarem i wymień/napraw.',no:'Sprawdź wiązkę, sterowanie ECU, kompresję, szczelność dolotu i wtryskiwacz danego cylindra.'}
+{cat:'Elektryka',title:'Problem z ładowaniem',tags:'alternator BMS IBS 12V',intro:'Sprawdź nie tylko napięcie, ale również spadki napięć i sterowanie alternatora.',steps:[
+{q:'Czy napięcie akumulatora po uruchomieniu wzrasta powyżej napięcia spoczynkowego?',yes:1,no:'Sprawdź pasek, przewód B+, bezpiecznik alternatora, masę i wzbudzenie/sterowanie.'},
+{q:'Czy spadek napięcia między alternatorem a akumulatorem pod obciążeniem jest mały?',yes:2,no:'Napraw połączenie dodatnie lub masowe. Wysoki spadek może udawać uszkodzony alternator.'},
+{q:'Czy pojazd ma inteligentne ładowanie i brak błędów czujnika akumulatora/LIN?',yes:'Jeśli ładowanie nadal nieprawidłowe, sprawdź alternator/regulator.',no:'Diagnozuj IBS/BMS/LIN, czujnik akumulatora i komunikację z alternatorem.'}
 ]},
-{id:'lowpower',group:'Silnik',name:'Brak mocy / tryb awaryjny',tags:'brak mocy turbo p0299 p0234 egr dpf',steps:[
- {q:'Czy jest zapisany kod związany z doładowaniem, EGR, DPF lub MAF/MAP?',type:'yesno',yes:'Porównaj wartość zadaną z rzeczywistą dla wskazanego układu. Nie wymieniaj części tylko na podstawie DTC.',no:'Wykonaj log: ciśnienie doładowania, MAF, MAP, ciśnienie paliwa i pozycja EGR.'},
- {q:'Czy rzeczywiste ciśnienie doładowania wyraźnie nie nadąża za zadanym?',type:'yesno',yes:'Sprawdź szczelność dolotu/intercoolera, podciśnienie/aktuator, geometrię/wastegate oraz turbosprężarkę.',no:'Szukaj w układzie paliwowym, EGR/DPF, przepływie powietrza lub ograniczeniu wydechu.'}
+{cat:'Komunikacja',title:'Brak komunikacji ze sterownikiem',tags:'CAN U0100 U0121 gateway',intro:'Najpierw sprawdź zasilania i masy modułu, potem magistralę.',steps:[
+{q:'Czy sterownik ma stałe i zapłonowe zasilanie oraz prawidłowe masy?',yes:1,no:'Napraw zasilanie, bezpiecznik, przekaźnik, masę lub wiązkę.'},
+{q:'Czy rezystancja CAN-H do CAN-L przy wyłączonym zasilaniu jest około 60 Ω?',yes:2,no:'Około 120 Ω sugeruje brak jednego terminatora; bardzo niska rezystancja może wskazywać zwarcie lub dodatkowe obciążenie.'},
+{q:'Czy CAN-H i CAN-L mają prawidłowe napięcia spoczynkowe i aktywność?',yes:'Podejrzewaj sam moduł, gateway lub problem logiczny/konfiguracyjny.',no:'Lokalizuj zwarcie do plusa/masy lub przerwę przez odłączanie segmentów/modułów.'}
 ]},
-{id:'parasitic',group:'Elektryka',name:'Akumulator rozładowuje się na postoju',tags:'pobór prądu rozładowuje akumulator',steps:[
- {q:'Po uśpieniu auta zmierz pobór prądu spoczynkowego.',type:'number',unit:'mA',max:80,ok:'Pobór jest zwykle akceptowalny dla wielu aut. Jeśli akumulator nadal siada, sprawdź jego pojemność i ładowanie.',bad:'Pobór jest wysoki. Wyjmuj bezpieczniki/odłączaj gałęzie i obserwuj spadek, pamiętając o ponownym usypianiu modułów.'}
+{cat:'Emisja',title:'DPF często się zapycha',tags:'P2002 P2463 DPF różnica ciśnień',intro:'Nie zaczynaj od wymiany DPF. Najpierw sprawdź przyczynę nadmiernej produkcji sadzy lub nieskutecznej regeneracji.',steps:[
+{q:'Czy czujnik różnicy ciśnień pokazuje logiczne wartości przy zgaszonym i pracującym silniku?',yes:1,no:'Sprawdź przewody ciśnieniowe, czujnik i jego zasilanie.'},
+{q:'Czy temperatury EGT osiągają wartości potrzebne do regeneracji?',yes:2,no:'Sprawdź czujniki temperatury, EGR, układ wtryskowy i warunki blokujące regenerację.'},
+{q:'Czy silnik osiąga prawidłową temperaturę roboczą i nie ma błędów wtrysku/EGR/MAF?',yes:'Oceń popiół i rzeczywiste zapełnienie DPF; możliwe czyszczenie lub wymiana po potwierdzeniu.',no:'Usuń przyczynę: termostat, EGR, wtrysk, MAF/MAP lub spalanie.'}
 ]},
-{id:'wipers',group:'Nadwozie',name:'Wycieraczki działają samoczynnie / nieprawidłowo',tags:'wycieraczki bcm bsi manetka silnik',steps:[
- {q:'Czy tester widzi zmianę stanu manetki wycieraczek zgodnie z jej położeniem?',type:'yesno',yes:'Wejście manetki jest prawdopodobnie poprawne. Sprawdź żądanie BCM/BSI do silnika, LIN/CAN i sygnał parkowania.',no:'Sprawdź manetkę, taśmę/COM2000, złącza, zasilanie i wiązkę wejściową modułu nadwozia.'},
- {q:'Czy złącza BCM/BSI lub silnika wycieraczek mają ślady wilgoci/korozji?',type:'yesno',yes:'Usuń źródło wilgoci, oczyść i napraw złącza/ścieżki. Potem skasuj błędy i wykonaj test funkcjonalny.',no:'Sprawdź sygnał parkowania, przekaźnik/driver silnika i komunikację.'}
+{cat:'ABS/ESP',title:'Kontrolka ABS/ESP',tags:'C0035 wheel speed ABS',intro:'Najpierw sprawdź, który sygnał prędkości koła jest niewiarygodny.',steps:[
+{q:'Czy Live Data pokazuje jedno koło z inną prędkością niż pozostałe?',yes:1,no:'Sprawdź kody DTC, zasilanie pompy/modułu i czujniki kąta/ciśnienia/yaw.'},
+{q:'Czy czujnik i wiązka mają prawidłowe zasilanie/sygnał?',yes:'Sprawdź pierścień magnetyczny/łożysko, szczelinę i mechaniczne uszkodzenia.',no:'Napraw czujnik, złącze lub wiązkę.'}
+]},
+{cat:'Klimatyzacja',title:'Klimatyzacja nie chłodzi',tags:'AC pressure compressor',intro:'Sprawdź, czy sterownik w ogóle zezwala na włączenie sprężarki.',steps:[
+{q:'Czy ciśnienie czynnika w Live Data jest wiarygodne i nie jest skrajnie niskie?',yes:1,no:'Sprawdź ilość czynnika, nieszczelność i czujnik ciśnienia.'},
+{q:'Czy żądanie A/C jest aktywne i sterownik zezwala na sprężarkę?',yes:2,no:'Sprawdź temperatury, czujniki, warunki blokujące i błędy ECU/klimatyzacji.'},
+{q:'Czy sprężarka otrzymuje sterowanie i zmienia ciśnienia?',yes:'Sprawdź wydajność układu, zawór rozprężny, parownik/skraplacz i przepływ powietrza.',no:'Sprawdź sprzęgło/zawór sterujący sprężarki, przekaźnik, zasilanie i samą sprężarkę.'}
 ]}
 ];
-const dtcDB={
+
+const dtcDb={
+'P0335':{name:'Czujnik położenia wału korbowego – obwód',cat:'Rozruch',advice:'Sprawdź obroty podczas rozruchu, zasilanie/masę/sygnał czujnika, wiązkę i koło impulsowe.'},
+'P0340':{name:'Czujnik położenia wałka – obwód',cat:'Rozruch',advice:'Sprawdź CMP, synchronizację wał/wałek i mechaniczny rozrząd.'},
+'P0299':{name:'Zbyt niskie doładowanie',cat:'Silnik',advice:'Porównaj boost zadany/rzeczywisty, sprawdź szczelność dolotu, VNT/wastegate, podciśnienie i MAP.'},
+'P0300':{name:'Losowe/wielokrotne wypadanie zapłonu',cat:'Zapłon',advice:'Sprawdź liczniki misfire, paliwo, zapłon, lewe powietrze i kompresję.'},
+'P0401':{name:'Niewystarczający przepływ EGR',cat:'Emisja',advice:'Sprawdź pozycję zadaną/rzeczywistą EGR, MAF, kanały EGR i sterowanie zaworu.'},
+'P2002':{name:'Skuteczność DPF poniżej progu',cat:'Emisja',advice:'Sprawdź różnicę ciśnień, EGT, stopień zapełnienia i przyczynę nadmiernej sadzy.'},
+'P2463':{name:'Nadmierne nagromadzenie sadzy DPF',cat:'Emisja',advice:'Sprawdź czujnik różnicy ciśnień, warunki regeneracji, EGT, EGR i wtrysk.'},
+'U0100':{name:'Utrata komunikacji z ECU/PCM',cat:'Komunikacja',advice:'Sprawdź zasilania ECU, masy, rezystancję CAN i aktywność magistrali.'},
+'U0121':{name:'Utrata komunikacji z modułem ABS',cat:'Komunikacja',advice:'Sprawdź zasilania ABS, CAN i gateway.'},
+'C0035':{name:'Czujnik prędkości koła – lewy przód',cat:'ABS/ESP',advice:'Porównaj Live Data prędkości kół, sprawdź czujnik, wiązkę i pierścień magnetyczny.'}
+};
+
+const dtcBaseDb={
 'P0010':'Obwód sterowania nastawnikiem wałka rozrządu A — bank 1','P0011':'Pozycja wałka A — zbyt wczesne przestawienie / wydajność — bank 1','P0016':'Korelacja położenia wału i wałka — bank 1 czujnik A','P0030':'Obwód grzałki sondy lambda — bank 1 czujnik 1','P0036':'Obwód grzałki sondy lambda — bank 1 czujnik 2',
 'P0068':'Korelacja MAP/MAF z położeniem przepustnicy','P0087':'Za niskie ciśnienie w szynie paliwowej','P0088':'Za wysokie ciśnienie w szynie paliwowej','P0093':'Wykryto duży wyciek układu paliwowego','P0100':'Obwód przepływomierza MAF','P0101':'MAF — zakres / wydajność','P0102':'MAF — niski sygnał','P0103':'MAF — wysoki sygnał','P0105':'Obwód czujnika MAP','P0106':'MAP — zakres / wydajność','P0110':'Obwód czujnika temperatury powietrza dolotowego','P0115':'Obwód czujnika temperatury cieczy chłodzącej','P0117':'Czujnik temperatury cieczy — niski sygnał','P0118':'Czujnik temperatury cieczy — wysoki sygnał',
 'P0120':'Obwód czujnika położenia przepustnicy/pedału A','P0121':'Czujnik położenia przepustnicy/pedału A — zakres / wydajność','P0130':'Obwód sondy lambda — bank 1 czujnik 1','P0131':'Sonda lambda — niski sygnał — bank 1 czujnik 1','P0132':'Sonda lambda — wysoki sygnał — bank 1 czujnik 1','P0133':'Sonda lambda — wolna odpowiedź — bank 1 czujnik 1','P0134':'Brak aktywności sondy lambda — bank 1 czujnik 1','P0135':'Obwód grzałki sondy lambda — bank 1 czujnik 1','P0141':'Obwód grzałki sondy lambda — bank 1 czujnik 2','P0170':'Korekta dawki paliwa — bank 1','P0171':'Mieszanka zbyt uboga — bank 1','P0172':'Mieszanka zbyt bogata — bank 1','P0190':'Obwód czujnika ciśnienia listwy paliwowej','P0191':'Czujnik ciśnienia listwy paliwowej — zakres / wydajność','P0201':'Obwód wtryskiwacza — cylinder 1','P0202':'Obwód wtryskiwacza — cylinder 2','P0203':'Obwód wtryskiwacza — cylinder 3','P0204':'Obwód wtryskiwacza — cylinder 4',
@@ -307,124 +265,183 @@ const dtcDB={
 'U0001':'Magistrala komunikacyjna CAN High Speed','U0100':'Utrata komunikacji z ECM/PCM','U0101':'Utrata komunikacji z TCM','U0121':'Utrata komunikacji z modułem ABS/ESP','U0140':'Utrata komunikacji z modułem nadwozia BCM','U0151':'Utrata komunikacji z modułem poduszek powietrznych','U0164':'Utrata komunikacji z modułem klimatyzacji','U0401':'Odebrano nieprawidłowe dane z ECM/PCM','U0415':'Odebrano nieprawidłowe dane z modułu ABS',
 'B1000':'Błąd / usterka wewnętrzna modułu nadwozia — znaczenie może zależeć od producenta','B1200':'Kod nadwozia zależny od producenta — sprawdź dokumentację konkretnego pojazdu','C0035':'Obwód czujnika prędkości lewego przedniego koła','C0040':'Obwód czujnika prędkości prawego przedniego koła','C0110':'Obwód silnika pompy ABS — znaczenie może zależeć od producenta'
 };
-const dtcExtra={
-'P0171':{cause:'Nieszczelność dolotu, zaniżony MAF, niskie ciśnienie paliwa, wtryskiwacz, sonda lambda.',test:'Sprawdź korekty STFT/LTFT, szczelność dolotu, MAF i ciśnienie paliwa.'},
-'P0299':{cause:'Nieszczelność dolotu/intercoolera, sterowanie turbo, wastegate/geometria, podciśnienie, turbo.',test:'Porównaj doładowanie zadane i rzeczywiste; sprawdź szczelność oraz aktuator.'},
+
+const dtcBaseExtra={
+'P0171':{cause:'Nieszczelność dolotu, zaniżony MAF, niskie ciśnienie paliwa, wtryskiwacz, sonda lambda.',test:'Sprawdź STFT/LTFT, szczelność dolotu, MAF i ciśnienie paliwa.'},
+'P0299':{cause:'Nieszczelność dolotu/intercoolera, sterowanie turbo, wastegate/VNT, podciśnienie, turbosprężarka.',test:'Porównaj doładowanie zadane z rzeczywistym, sprawdź szczelność i aktuator.'},
 'P0300':{cause:'Zapłon, paliwo, nieszczelność dolotu, kompresja, synchronizacja.',test:'Sprawdź liczniki misfire, świece/cewki, korekty paliwa i kompresję.'},
-'P0401':{cause:'Zablokowany EGR/kanały, sterowanie EGR, MAF/MAP, instalacja.',test:'Porównaj EGR zadany/rzeczywisty i zmianę MAF podczas aktywacji.'},
-'P0420':{cause:'Katalizator, nieszczelność wydechu, sonda przed/za katalizatorem, wcześniejsze misfire.',test:'Sprawdź pracę obu sond, szczelność wydechu i przyczynę ewentualnego wypadania zapłonu.'},
+'P0401':{cause:'Zablokowany EGR/kanały, sterowanie EGR, MAF/MAP, instalacja.',test:'Porównaj EGR zadany/rzeczywisty i zmianę MAF przy aktywacji EGR.'},
+'P0420':{cause:'Katalizator, nieszczelność wydechu, sonda przed/za katalizatorem, wcześniejsze misfire.',test:'Sprawdź pracę obu sond, szczelność wydechu i przyczynę ewentualnych wypadnięć zapłonu.'},
 'P0562':{cause:'Akumulator, alternator, przewody B+/masa, bezpiecznik główny, sterowanie ładowaniem.',test:'Zmierz napięcie pod obciążeniem i spadki napięć przewodów.'},
-'U0100':{cause:'Brak zasilania/masy ECU, przerwa/zwarcie CAN, gateway, uszkodzenie ECU.',test:'Sprawdź +30/+15/masy ECU, około 60 Ω CAN-H do CAN-L przy uśpionej sieci i przebiegi CAN.'},
-'U0121':{cause:'Zasilanie/masa ABS, CAN, złącze, moduł ABS.',test:'Sprawdź bezpieczniki ABS, zasilania, masy i magistralę CAN przy module.'}
+'U0100':{cause:'Brak zasilania/masy ECU, przerwa/zwarcie CAN, gateway, ECU.',test:'Sprawdź +30/+15/masy ECU, rezystancję CAN-H↔CAN-L i przebiegi CAN.'},
+'U0121':{cause:'Zasilanie/masa ABS, CAN, złącze, moduł ABS.',test:'Sprawdź bezpieczniki, zasilania i masy ABS oraz magistralę CAN przy module.'}
 };
-function dtcGroupName(c){return c[0]==='P'?'Układ napędowy / silnik / skrzynia':c[0]==='B'?'Nadwozie':c[0]==='C'?'Podwozie / ABS':c[0]==='U'?'Komunikacja / sieć':'Inne'}
-function dtcGenericHint(c){if(c[0]==='U')return 'Najpierw sprawdź zasilania i masy modułu oraz stan magistrali CAN/LIN.';if(c[0]==='C')return 'Sprawdź czujniki podwozia, wiązkę, zasilanie modułu ABS/ESP i dane bieżące.';if(c[0]==='B')return 'Sprawdź dokumentację producenta, zasilanie modułu nadwozia, wejścia/wyjścia i wiązkę.';return 'Odczytaj freeze-frame i dane bieżące, sprawdź zasilanie/masy oraz wykonaj pomiary układu wskazanego kodem.'}
-function renderDtcBase(){let q=($('dtcBaseSearch')?.value||'').trim().toLowerCase(),g=$('dtcBaseGroup')?.value||'all';let a=Object.entries(dtcDB).filter(([c,d])=>(g==='all'||c[0]===g)&&(!q||(c+' '+d).toLowerCase().includes(q)));$('dtcBaseCount').textContent='Znaleziono: '+a.length+' kodów';$('dtcBaseList').innerHTML=a.slice(0,250).map(([c,d])=>{let e=dtcExtra[c]||{};return '<div class="card"><span class="badge">'+esc(dtcGroupName(c))+'</span><h2>'+esc(c)+' — '+esc(d)+'</h2><p><b>Możliwe przyczyny:</b> '+esc(e.cause||dtcGenericHint(c))+'</p><p><b>Co sprawdzić:</b> '+esc(e.test||dtcGenericHint(c))+'</p><button class="secondary dtcCopyToAuto" data-code="'+c+'">Otwórz w Auto Diag</button></div>'}).join('')||'<p class="muted">Brak kodu w lokalnej bazie. Kody producenta mogą wymagać dokumentacji konkretnej marki/modelu.</p>';document.querySelectorAll('.dtcCopyToAuto').forEach(b=>b.onclick=()=>{showView('autodiag');renderDtcStart();$('dtcInput').value=b.dataset.code;$('dtcGo').click();});}
+function dtcGroupName(c){return c[0]==='P'?'Napęd / silnik / skrzynia':c[0]==='U'?'Komunikacja / CAN':c[0]==='C'?'Podwozie / ABS':c[0]==='B'?'Nadwozie':'Inne'}
+function dtcGenericAdvice(c){if(c[0]==='U')return 'Sprawdź zasilania i masy wskazanego modułu, CAN-H/CAN-L, rezystancję magistrali i złącza.';if(c[0]==='C')return 'Sprawdź Live Data czujników podwozia, wiązkę, zasilanie ABS/ESP i element mechaniczny współpracujący z czujnikiem.';if(c[0]==='B')return 'Zweryfikuj opis dla konkretnej marki, sprawdź zasilanie modułu nadwozia, wejścia/wyjścia i wiązkę.';return 'Odczytaj Freeze Frame i Live Data. Sprawdź zasilania, masy, wiązkę oraz parametry układu wskazanego kodem przed wymianą części.'}
+function renderDtcBase(){
+ const q=($('dtcBaseSearch').value||'').trim().toLowerCase(), g=$('dtcBaseGroup').value;
+ const rows=Object.entries(dtcBaseDb).filter(([c,d])=>(g==='all'||c[0]===g)&&(!q||(c+' '+d).toLowerCase().includes(q)));
+ $('dtcBaseCount').textContent='Znaleziono: '+rows.length+' kodów w lokalnej bazie';
+ $('dtcBaseList').innerHTML=rows.map(([c,d])=>{const e=dtcBaseExtra[c]||{}; const adv=e.test||dtcGenericAdvice(c); return '<div class="card"><span class="badge">'+esc(dtcGroupName(c))+'</span><h2>'+esc(c)+' — '+esc(d)+'</h2><p><b>Co sprawdzić:</b> '+esc(adv)+'</p>'+(e.cause?'<p><b>Możliwe przyczyny:</b> '+esc(e.cause)+'</p>':'')+'<button class="primary dtcBaseOpen" data-code="'+esc(c)+'">Przejdź do diagnozy tego kodu</button></div>'}).join('')||'<div class="card"><p class="muted">Brak wyniku. Jeśli to kod producenta, sprawdź dokumentację konkretnej marki/modelu i sterownika.</p></div>';
+ document.querySelectorAll('.dtcBaseOpen').forEach(b=>b.onclick=()=>{showView('dtc');$('dtcInput').value=b.dataset.code;$('dtcSearchBtn').click();});
+}
+$('dtcBaseSearch').addEventListener('input',renderDtcBase); $('dtcBaseGroup').addEventListener('change',renderDtcBase);
 
-let autoCase=null,autoStep=0;
-function vehicleLabel(){return [ $('carBrand').value,$('carModel').value,$('carYear').value,$('carEngine').value].filter(x=>x&&x!=='Wybierz markę').join(' ')}
-function renderSymptomStart(){ $('autoDiagBox').innerHTML=''; $('autoStart').innerHTML='<div class="card"><h2>Wybierz objaw</h2><input id="autoSearch" placeholder="np. kręci nie odpala, brak mocy, CAN, wycieraczki"><div id="autoCases" style="margin-top:12px"></div></div>'; const f=()=>{let q=$('autoSearch').value.toLowerCase(); let a=autoCases.filter(x=>(x.name+' '+x.tags+' '+x.group).toLowerCase().includes(q)); $('autoCases').innerHTML=a.map(x=>'<div class="card autoCase" data-id="'+x.id+'"><span class="badge">'+esc(x.group)+'</span><h3>'+esc(x.name)+'</h3></div>').join(''); document.querySelectorAll('.autoCase').forEach(e=>e.onclick=()=>startAutoCase(e.dataset.id));}; $('autoSearch').oninput=f;f();}
-function renderDtcStart(){ $('autoDiagBox').innerHTML=''; $('autoStart').innerHTML='<div class="card"><h2>Kod DTC</h2><div class="toolbar"><input id="dtcInput" placeholder="np. P0299, U0100"><button class="primary" id="dtcGo">Analizuj kod</button></div><div id="dtcResult"></div></div>'; $('dtcGo').onclick=()=>{let c=$('dtcInput').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,''); let desc=dtcDB[c]||'Kod nie jest jeszcze w lokalnej bazie. Może to być kod producenta — sprawdź dokumentację dla konkretnej marki, modelu i sterownika.'; let extra=dtcExtra[c]||{}; let match=(c.startsWith('P03')? 'misfire':c==='P0299'||c==='P0234'?'lowpower':c.startsWith('U01')?'nomodule':c==='P0562'?'charging':null); $('dtcResult').innerHTML='<div class="result"><h3>'+esc(c||'Brak kodu')+'</h3><p>'+esc(desc)+'</p>'+(match?'<button class="primary" id="dtcStartCase">Rozpocznij dopasowaną procedurę</button>':'')+'</div>'; if(match)$('dtcStartCase').onclick=()=>startAutoCase(match);};}
-function renderModuleStart(){ $('autoDiagBox').innerHTML=''; $('autoStart').innerHTML='<div class="card"><h2>Moduł / sieć pojazdu</h2><p class="muted">Procedura dla ECU, ABS/ESP, Airbag, BCM/BSI, gateway i innych sterowników.</p><button class="primary" id="moduleStart">Brak komunikacji z modułem</button></div>'; $('moduleStart').onclick=()=>startAutoCase('nomodule');}
-function startAutoCase(id){ autoCase=autoCases.find(x=>x.id===id);autoStep=0;$('autoStart').innerHTML='';renderAutoStep();}
-function renderAutoStep(){ if(!autoCase)return; let s=autoCase.steps[autoStep]; if(!s){ $('autoDiagBox').innerHTML='<div class="card"><h2>✅ Procedura zakończona</h2><p>Wykonaj naprawę wynikającą z pomiarów, skasuj błędy i wykonaj jazdę/test funkcjonalny. Potwierdź, że objaw nie wraca.</p><button class="secondary" id="autoAgain">Nowa diagnoza</button></div>'; $('autoAgain').onclick=renderSymptomStart;return;} let input=s.type==='number'?'<div class="toolbar"><input id="measureVal" type="number" step="any" inputmode="decimal" placeholder="Wpisz wynik"><button class="primary" id="measureGo">Oceń '+esc(s.unit||'')+'</button></div>':'<div class="toolbar"><button class="primary" id="yesBtn">TAK</button><button class="secondary" id="noBtn">NIE</button></div>'; $('autoDiagBox').innerHTML='<div class="card"><span class="badge">'+esc(autoCase.group)+'</span><h2>'+esc(autoCase.name)+'</h2><p class="muted">'+esc(vehicleLabel()||'Pojazd nieokreślony')+' • krok '+(autoStep+1)+' / '+autoCase.steps.length+'</p><div class="step"><h3>'+esc(s.q)+'</h3>'+input+'<div id="autoDecision"></div></div><button class="secondary" id="autoBack" style="margin-top:12px">← Zmień objaw</button></div>'; $('autoBack').onclick=renderSymptomStart; if(s.type==='number')$('measureGo').onclick=()=>{let v=parseFloat(String($('measureVal').value).replace(',','.')); if(Number.isNaN(v))return alert('Wpisz wynik pomiaru.'); let good=(s.min==null||v>=s.min)&&(s.max==null||v<=s.max); showDecision(good?s.ok:s.bad,good);}; else {$('yesBtn').onclick=()=>showDecision(s.yes,true);$('noBtn').onclick=()=>showDecision(s.no,false);}}
-function showDecision(text,good){ $('autoDecision').innerHTML='<div class="'+(good?'okbox':'dangerbox')+'" style="margin-top:12px"><b>'+(good?'✅ Wynik / kierunek':'⚠️ Wynik / kierunek')+'</b><br>'+esc(text)+'</div><button class="primary" id="nextAuto" style="margin-top:12px">Następny krok →</button>'; $('nextAuto').onclick=()=>{autoStep++;renderAutoStep();};}
-$('modeSymptom').onclick=renderSymptomStart;$('modeDtc').onclick=renderDtcStart;$('modeModule').onclick=renderModuleStart;renderSymptomStart();
-
-const diagnostics=[
-{cat:'Zasilacze SMPS',name:'Zasilacz impulsowy – nie uruchamia się',sym:'brak napięć, martwy',flow:['230 V AC','bezpiecznik/EMI','mostek','~325 V DC','PWM/MOSFET','transformator','wtórna'],steps:['Sprawdź bezpiecznik i wejście AC.','Zmierz szynę HV na kondensatorze głównym.','Sprawdź VCC kontrolera PWM.','Sprawdź MOSFET kluczujący i rezystor startowy.','Sprawdź prostowniki i zwarcia po stronie wtórnej.']},
-{cat:'TV / monitory',name:'TV – jest dźwięk, brak obrazu',sym:'czarny ekran, podświetlenie',flow:['zasilacz','mainboard','T-CON/panel','driver LED','listwy LED'],steps:['Zrób test latarki.','Sprawdź BL_ON i napięcie drivera LED.','Sprawdź listwy testerem LED.','Jeśli podświetlenie działa, sprawdź T-CON i zasilania panelu.']},
-{cat:'Laptopy',name:'Laptop – całkowicie martwy',sym:'brak reakcji na POWER',flow:['19 V','MOSFET wejściowy','charger','3V/5V ALW','EC','POWER','główne szyny'],steps:['Sprawdź 19 V na wejściu.','Sprawdź MOSFET-y wejściowe.','Sprawdź 3V/5V ALW.','Sprawdź EC i sygnał POWER.','Śledź enable/power-good kolejnych przetwornic.']},
-{cat:'Laptopy',name:'Laptop – włącza się, brak obrazu',sym:'wentylator działa, czarny ekran',flow:['ALW','CPU/RAM','BIOS','POST','eDP/HDMI','matryca'],steps:['Sprawdź obraz zewnętrzny.','Sprawdź RAM.','Sprawdź szyny CPU/RAM.','Sprawdź aktywność SPI BIOS.','Sprawdź eDP/HDMI i zasilanie matrycy.']},
-{cat:'Telefony / tablety',name:'Telefon – nie ładuje',sym:'0 A, wolne ładowanie, brak USB',flow:['port','VBUS','ochrona','USB/PD','charger','bateria'],steps:['Sprawdź port.','Zmierz VBUS i pobór.','Sprawdź CC dla USB-C.','Sprawdź tor ochrony i charger.','Sprawdź baterię/NTC.']},
-{cat:'Konsole',name:'Konsola – brak HDMI',sym:'brak sygnału, no signal',flow:['port','ESD','HPD/5V','retimer','SoC','TMDS'],steps:['Sprawdź port i ESD.','Sprawdź 5 V i HPD.','Sprawdź zasilania retimera.','Sprawdź reset i zegar retimera.','Porównaj sygnał przed i za retimerem.']},
-{cat:'Audio',name:'Wzmacniacz – charczy / zniekształca',sym:'charczenie, kanał zanika',flow:['wejście','przedwzmacniacz','driver','końcówka','przekaźnik','głośnik'],steps:['Sprawdź zasilania symetryczne.','Porównaj kanały.','Sprawdź DC na wyjściu.','Sprawdź kondensatory i luty.','Sprawdź przekaźnik i końcówkę mocy.']},
-{cat:'AGD',name:'AGD – pompa/grzałka nie działa',sym:'brak pracy elementu wykonawczego',flow:['zasilanie','sterownik','triak/przekaźnik','obciążenie','czujniki'],steps:['Sprawdź sam element wykonawczy.','Sprawdź przewody.','Sprawdź triak/przekaźnik.','Sprawdź sygnał sterujący.','Sprawdź czujniki i blokady warunkujące start.']},
-{cat:'BMS / Li-ion',name:'BMS – blokuje pakiet',sym:'brak wyjścia, nierówne cele',flow:['cele','przewody balansujące','AFE/BMS','CHG/DSG MOSFET','wyjście'],steps:['Zmierz każdą celę.','Sprawdź kolejność B-/B1...B+.','Sprawdź NTC.','Sprawdź MOSFET-y CHG/DSG.','Sprawdź czy różnica cel nie uruchamia ochrony.']},
-{cat:'Elektronika samochodowa',name:'Sterownik – przepala bezpiecznik',sym:'zwarcie 12 V',flow:['bezpiecznik','TVS','ochrona polaryzacji','MOSFET','DC/DC','gałęzie'],steps:['Zmierz rezystancję wejścia do masy.','Sprawdź TVS i MOSFET ochronny.','Odseparuj gałęzie.','Lokalizuj zwarcie z ograniczeniem prądu.']}
+const liveParams=[
+{name:'Obroty silnika podczas rozruchu [rpm]',min:150,max:400,low:'Za niskie lub brak sygnału. Sprawdź akumulator/rozrusznik i czujnik CKP.',ok:'Typowy zakres do dalszej diagnostyki rozruchu.',high:'Nietypowo wysokie wskazanie. Zweryfikuj parametr i czujnik.'},
+{name:'Napięcie akumulatora podczas rozruchu [V]',min:9.6,max:12.5,low:'Za duży spadek. Sprawdź akumulator, klemy, masę i rozrusznik.',ok:'Napięcie wygląda prawidłowo dla rozruchu.',high:'Wartość nietypowa podczas kręcenia — zweryfikuj pomiar.'},
+{name:'Ciśnienie rail diesel podczas rozruchu [bar]',min:250,max:600,low:'Może być za niskie do startu. Sprawdź zasilanie paliwem, regulator, pompę i przelewy.',ok:'Typowy zakres umożliwiający dalszą ocenę rozruchu.',high:'Nietypowo wysokie — sprawdź regulator/czujnik i specyfikację silnika.'},
+{name:'Napięcie ładowania [V]',min:13.5,max:14.9,low:'Ładowanie może być niewystarczające. Sprawdź alternator, przewody i sterowanie.',ok:'Typowy zakres klasycznego układu ładowania.',high:'Możliwe przeładowanie. Sprawdź regulator i czujnik akumulatora.'},
+{name:'Rezystancja CAN-H ↔ CAN-L [Ω]',min:55,max:65,low:'Za niska. Podejrzenie zwarcia lub dodatkowego obciążenia magistrali.',ok:'Około 60 Ω wskazuje zwykle dwa terminatory 120 Ω równolegle.',high:'Około 120 Ω może oznaczać brak jednego terminatora lub przerwę magistrali.'}
 ];
-const diagCats=['Wszystkie',...new Set(diagnostics.map(d=>d.cat))];
-$('diagCat').innerHTML=diagCats.map(c=>'<option>'+esc(c)+'</option>').join('');
-function renderDiag(){
- const q=$('diagSearch').value.toLowerCase().trim(),cat=$('diagCat').value;
- const arr=diagnostics.filter(d=>(cat==='Wszystkie'||d.cat===cat)&&JSON.stringify(d).toLowerCase().includes(q));
- $('diagList').innerHTML=arr.map(d=>'<div class="card diagItem" data-name="'+encodeURIComponent(d.name)+'"><span class="badge">'+esc(d.cat)+'</span><h2>'+esc(d.name)+'</h2><p class="muted">'+esc(d.sym)+'</p></div>').join('')||'<p class="muted">Brak wyników.</p>';
- document.querySelectorAll('.diagItem').forEach(el=>el.addEventListener('click',()=>openDiag(decodeURIComponent(el.dataset.name))));
-}
-function openDiag(name){
- const d=diagnostics.find(x=>x.name===name); if(!d)return;
- $('diagList').style.display='none';
- $('diagDetail').innerHTML='<div class="detailBox"><button class="secondary" id="closeDiag">← Wróć do procedur</button><span class="badge">'+esc(d.cat)+'</span><h2>'+esc(d.name)+'</h2><h3>Schemat działania</h3><div class="flow">'+d.flow.map((x,i)=>(i?'<b>→</b>':'')+'<span>'+esc(x)+'</span>').join('')+'</div><h3>Diagnostyka krok po kroku</h3>'+d.steps.map((s,i)=>'<div class="step"><b>'+(i+1)+'.</b> '+esc(s)+'</div>').join('')+'</div>';
- $('closeDiag').addEventListener('click',()=>{$('diagDetail').innerHTML='';$('diagList').style.display='block'});
-}
-$('diagSearch').addEventListener('input',renderDiag);$('diagCat').addEventListener('change',renderDiag);
 
-const components=[
-['Pasywne','Rezystor','🟫','Ogranicza prąd i ustala napięcia.','Pomiar rezystancji po odłączeniu zasilania.','przerwa, zmiana wartości, przegrzanie'],
-['Pasywne','Kondensator ceramiczny','⬜','Filtracja i odsprzęganie.','Tryb diody/rezystancja do wykrywania zwarcia; pojemność po wylutowaniu.','zwarcie, pęknięcie'],
-['Pasywne','Kondensator elektrolityczny','🔋','Filtruje zasilanie i magazynuje energię.','Pojemność, ESR, oględziny.','wysoki ESR, utrata pojemności, wyciek'],
-['Pasywne','Cewka','🌀','Magazynuje energię w przetwornicy.','Ciągłość, rezystancja, przebieg SW.','przerwa, przegrzanie'],
-['Półprzewodniki','Dioda','▶️','Przewodzi głównie w jednym kierunku.','Tryb diody w obu kierunkach.','zwarcie, przerwa, upływ'],
-['Półprzewodniki','Dioda Schottky','⏩','Szybka dioda o niskim spadku.','Tryb diody, porównanie obu kierunków.','zwarcie, upływ'],
-['Półprzewodniki','Dioda TVS','⚡','Chroni linię przed przepięciem.','Sprawdzenie zwarcia do masy.','zwarcie po przepięciu'],
-['Półprzewodniki','Tranzystor BJT','🔺','Wzmacnia lub przełącza.','Test złącz B-E i B-C w trybie diody.','zwarcie, przerwa, utrata wzmocnienia'],
-['Półprzewodniki','MOSFET','🔷','Klucz elektroniczny w zasilaniu i przetwornicach.','D-S, dioda pasożytnicza, napięcie VGS.','zwarcie D-S, przebicie bramki'],
-['Zasilanie','LDO','🔻','Stabilizator liniowy.','VIN, EN, VOUT i zwarcie wyjścia.','brak wyjścia, przegrzanie'],
-['Zasilanie','Kontroler PWM','🎛️','Steruje przetwornicą impulsową.','VIN/VCC, EN, SW/GATE, FB.','brak startu, protekcja, uszkodzenie drivera'],
-['Zasilanie','PMIC','🧠','Zarządza wieloma szynami zasilania.','Wejścia, enable, power-good, kolejność szyn.','brak sekwencji, zwarcie wyjścia'],
-['Sterowanie','Triak','🔺','Steruje AC w AGD i automatyce.','Zwarcie elektrod, obwód bramki, sterowanie.','zwarcie, brak wyzwalania'],
-['Sterowanie','Przekaźnik','🧲','Mechanicznie przełącza obciążenie.','Rezystancja cewki, napięcie cewki, styki.','wypalone styki, przerwa cewki'],
-['Sterowanie','Optoizolator','💡','Przenosi sygnał przez barierę galwaniczną.','LED wejściowa i tranzystor wyjściowy.','przerwa LED, spadek CTR'],
-['Pamięci','SPI Flash / BIOS','💾','Przechowuje firmware.','VCC, CS, CLK, DATA; odczyt programatorem.','uszkodzony wsad, brak komunikacji'],
-['Pamięci','EEPROM','🗃️','Przechowuje małe dane konfiguracyjne.','VCC, SDA/SCL lub SPI, porównanie wsadu.','błędne dane, brak ACK'],
-['Interfejsy','Retimer HDMI','📺','Odtwarza i kondycjonuje szybki sygnał HDMI.','Zasilania, reset, zegar, HPD, aktywność wejście/wyjście.','brak obrazu, przegrzanie'],
-['Interfejsy','Kontroler USB-C/PD','🔌','Negocjuje role i profile zasilania USB-C.','CC1/CC2, VBUS, VDD, komunikacja, MOSFET-y.','brak 20 V, brak ładowania'],
-['Interfejsy','Układ ESD','🛡️','Chroni linie szybkich interfejsów.','Tryb diody do masy, porównanie linii.','zwarcie, upływ'],
-['Logika','EC / KBC','⌨️','Steruje sekwencją laptopa i peryferiami.','Zasilanie, reset, zegar, POWER, SPI.','brak reakcji na POWER'],
-['Logika','MCU','🧩','Mikrokontroler sterujący urządzeniem.','Zasilanie, reset, oscylator, komunikacja.','brak startu, uszkodzony firmware'],
-['Czujniki','NTC','🌡️','Mierzy temperaturę.','Rezystancja i zmiana z temperaturą.','przerwa, zwarcie, zła wartość'],
-['Mechaniczne','Złącze FFC/FPC','🎗️','Łączy taśmy sygnałowe.','Oględziny, ciągłość, docisk.','wyrwane piny, korozja'],
-['Zabezpieczenia','Bezpiecznik SMD','🧯','Przerywa obwód przy nadmiernym prądzie.','Ciągłość i spadek napięcia pod obciążeniem.','przerwa jako skutek zwarcia']
-].map(x=>({cat:x[0],name:x[1],icon:x[2],desc:x[3],test:x[4],faults:x[5]}));
-const compCats=['Wszystkie',...new Set(components.map(c=>c.cat))];
-$('compCat').innerHTML=compCats.map(c=>'<option>'+esc(c)+'</option>').join('');
-function renderComponents(){
- const q=$('compSearch').value.toLowerCase().trim(),cat=$('compCat').value;
- const arr=components.filter(c=>(cat==='Wszystkie'||c.cat===cat)&&JSON.stringify(c).toLowerCase().includes(q));
- $('compList').innerHTML=arr.map(c=>'<div class="card compCard" data-name="'+encodeURIComponent(c.name)+'"><div class="iconBox">'+c.icon+'</div><div><span class="badge">'+esc(c.cat)+'</span><h2>'+esc(c.name)+'</h2><p class="muted">'+esc(c.desc)+'</p></div></div>').join('')||'<p class="muted">Brak wyników.</p>';
- document.querySelectorAll('.compCard').forEach(el=>el.addEventListener('click',()=>openComp(decodeURIComponent(el.dataset.name))));
-}
-function openComp(name){
- const c=components.find(x=>x.name===name);if(!c)return;
- $('compDetail').innerHTML='<div class="detailBox"><button class="secondary" id="closeComp">Zamknij</button><span class="badge">'+esc(c.cat)+'</span><h2>'+c.icon+' '+esc(c.name)+'</h2><p>'+esc(c.desc)+'</p><h3>Jak sprawdzać</h3><div class="result">'+esc(c.test)+'</div><h3 style="margin-top:12px">Typowe uszkodzenia</h3><div class="result">'+esc(c.faults)+'</div></div>';
- $('closeComp').addEventListener('click',()=>{$('compDetail').innerHTML=''});
- $('compDetail').scrollIntoView({behavior:'smooth',block:'start'});
-}
-$('compSearch').addEventListener('input',renderComponents);$('compCat').addEventListener('change',renderComponents);
+const trainerCases=[
+{title:'Skoda Octavia 1.6 TDI – kręci, nie odpala',sym:'Brak DTC. Podczas rozruchu Live Data pokazuje 0 rpm.',choices:[
+['Sprawdzić sygnał czujnika wału CKP i wiązkę',true,'Prawidłowo. Brak rpm podczas kręcenia to mocna wskazówka braku sygnału CKP.'],
+['Wymienić filtr DPF',false,'DPF nie wyjaśnia braku odczytu obrotów podczas rozruchu.'],
+['Wymienić akumulator bez pomiaru',false,'Najpierw sygnał CKP — tester nie widzi obrotów.']]},
+{title:'VW Passat 2.0 TDI – brak mocy',sym:'DTC P0299. Boost zadany 2200 mbar, rzeczywisty 1450 mbar pod obciążeniem.',choices:[
+['Sprawdzić szczelność dolotu i sterowanie VNT/wastegate',true,'Tak. Różnica zadane/rzeczywiste wskazuje na problem z doładowaniem.'],
+['Wymienić czujnik ABS',false,'Brak związku z doładowaniem.'],
+['Skasować błąd i nic nie mierzyć',false,'Błąd powróci, jeśli przyczyna pozostanie.']]},
+{title:'Ford Focus 1.6 TDCi – często zapchany DPF',sym:'Różnica ciśnień wysoka, temperatura silnika w trasie tylko 72°C.',choices:[
+['Sprawdzić termostat i warunki regeneracji',true,'Tak. Zbyt niska temperatura może uniemożliwiać skuteczną regenerację.'],
+['Od razu wymienić DPF',false,'Najpierw usuń przyczynę nieskutecznej regeneracji.'],
+['Odłączyć czujnik różnicy ciśnień',false,'To nie rozwiązuje problemu i utrudnia diagnostykę.']]},
+{title:'Opel Astra – brak komunikacji z ABS',sym:'Silnik ma komunikację, ABS nie odpowiada. Bezpiecznik ABS jest sprawny.',choices:[
+['Sprawdzić zasilania i masy modułu ABS oraz CAN',true,'Właściwa kolejność. Sprawny bezpiecznik nie potwierdza napięcia na samym module.'],
+['Wymienić wszystkie czujniki kół',false,'Brak komunikacji z modułem to inny poziom problemu.'],
+['Wymienić alternator',false,'Brak bezpośredniego związku.']]},
+{title:'Benzyna – P0302',sym:'Wypadanie zapłonu cylindra 2. Po zamianie cewki 2↔3 błąd zmienia się na P0303.',choices:[
+['Uszkodzona cewka jest bardzo prawdopodobna',true,'Tak. Usterka podążyła za cewką.'],
+['Uszkodzony cylinder 2',false,'Gdyby problem był mechaniczny cylindra 2, kod nie przeniósłby się razem z cewką.'],
+['Uszkodzony ABS',false,'Brak związku.']]}
+];
 
-function enc(x){return encodeURIComponent((x||'').trim())}
-function webSearch(type){
- const raw=$('webQuery').value.trim();if(!raw)return alert('Wpisz czego szukasz.');
- let u='';
- if(type==='google')u='https://www.google.com/search?q='+enc(raw);
- if(type==='youtube')u='https://www.youtube.com/results?search_query='+enc(raw);
- if(type==='ifixit')u='https://www.google.com/search?q='+enc('site:ifixit.com '+raw);
- if(type==='elektroda')u='https://www.google.com/search?q='+enc('site:elektroda.pl '+raw);
- if(type==='badcaps')u='https://www.google.com/search?q='+enc('site:badcaps.net '+raw);
- if(type==='datasheet')u='https://www.google.com/search?q='+enc(raw+' datasheet pdf');
- if(u)window.open(u,'_blank','noopener');
+const libCats=['Wszystkie',...new Set(procedures.map(p=>p.cat))];
+$('libCat').innerHTML=libCats.map(x=>'<option>'+esc(x)+'</option>').join('');
+
+function fillVehicle(){
+ $('brandSel').innerHTML=Object.keys(vehicles).map(x=>'<option>'+esc(x)+'</option>').join('');
+ updateModels();
+ $('symptomSel').innerHTML=symptoms.map(x=>'<option>'+esc(x)+'</option>').join('');
 }
-document.querySelectorAll('[data-search]').forEach(b=>b.addEventListener('click',()=>webSearch(b.dataset.search)));
-$('dsBtn').addEventListener('click',()=>{const q=$('dsQuery').value.trim();if(q)window.open('https://www.google.com/search?q='+enc(q+' datasheet pdf'),'_blank','noopener');else alert('Wpisz oznaczenie elementu.')});
-$('googlePartBtn').addEventListener('click',()=>{const q=$('dsQuery').value.trim();if(q)window.open('https://www.google.com/search?q='+enc(q),'_blank','noopener');else alert('Wpisz oznaczenie elementu.')});
-
-if($('dtcBaseSearch')){$('dtcBaseSearch').addEventListener('input',renderDtcBase);$('dtcBaseGroup').addEventListener('change',renderDtcBase);renderDtcBase();}
-
-renderLessons();renderDiag();renderComponents();
-
-if('serviceWorker' in navigator){
- window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=7.2',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));
+function updateModels(){
+ const b=$('brandSel').value;
+ $('modelSel').innerHTML=Object.keys(vehicles[b]).map(x=>'<option>'+esc(x)+'</option>').join('');
+ updateYearsEngines();
 }
+function updateYearsEngines(){
+ const b=$('brandSel').value,m=$('modelSel').value;
+ const rows=vehicles[b][m];
+ const years=[...new Set(rows.map(x=>x.split('|')[0]))];
+ const engines=[...new Set(rows.map(x=>x.split('|')[1]))];
+ $('yearSel').innerHTML=years.map(x=>'<option>'+esc(x)+'</option>').join('');
+ $('engineSel').innerHTML=engines.map(x=>'<option>'+esc(x)+'</option>').join('');
+}
+$('brandSel').addEventListener('change',updateModels);
+$('modelSel').addEventListener('change',updateYearsEngines);
+
+function findProcedure(sym,dtc){
+ const code=(dtc||'').trim().toUpperCase();
+ if(code && dtcDb[code]){
+   const cat=dtcDb[code].cat;
+   const exact=procedures.find(p=>p.cat===cat && p.tags.includes(code));
+   if(exact)return exact;
+   const catProc=procedures.find(p=>p.cat===cat);
+   if(catProc)return catProc;
+ }
+ const map={
+ 'Kręci, ale nie odpala':'Kręci, ale nie odpala',
+ 'Nie kręci rozrusznikiem':'Nie kręci rozrusznikiem',
+ 'Brak mocy':'Brak mocy – diesel/benzyna turbo',
+ 'Szarpie / wypadają zapłony':'Wypadanie zapłonu / szarpanie',
+ 'Problem z ładowaniem':'Problem z ładowaniem',
+ 'Kontrolka ABS/ESP':'Kontrolka ABS/ESP',
+ 'Brak komunikacji ze sterownikiem':'Brak komunikacji ze sterownikiem',
+ 'DPF często się zapycha':'DPF często się zapycha',
+ 'Klimatyzacja nie chłodzi':'Klimatyzacja nie chłodzi',
+ 'Gaśnie podczas jazdy':'Kręci, ale nie odpala',
+ 'Wysokie spalanie':'Brak mocy – diesel/benzyna turbo'
+ };
+ return procedures.find(p=>p.title===map[sym])||procedures[0];
+}
+
+function startTree(proc,hostId,context){
+ const host=$(hostId); let idx=0; const answers=[];
+ function show(){
+   const s=proc.steps[idx];
+   if(!s){host.innerHTML='<div class="okbox"><b>Procedura zakończona.</b><br>Jeśli wszystkie warunki są prawidłowe, przejdź do pomiarów specyficznych dla konkretnego silnika i dokumentacji producenta.</div>';return}
+   host.innerHTML='<div class="card"><div class="path">'+esc(context)+'</div><span class="badge">'+esc(proc.cat)+'</span><h2>'+esc(proc.title)+'</h2><p>'+esc(proc.intro)+'</p><div class="step"><b>Krok '+(idx+1)+'</b><h3 style="margin-top:8px">'+esc(s.q)+'</h3></div><div class="toolbar"><button class="good" id="treeYes">TAK / PRAWIDŁOWE</button><button class="danger" id="treeNo">NIE / NIEPRAWIDŁOWE</button></div><div id="treeHistory">'+answers.map(a=>'<div class="result">'+esc(a)+'</div>').join('')+'</div></div>';
+   $('treeYes').onclick=()=>branch(s.yes,true);
+   $('treeNo').onclick=()=>branch(s.no,false);
+ }
+ function branch(target,yes){
+   answers.push('Krok '+(idx+1)+': '+(yes?'TAK / prawidłowe':'NIE / nieprawidłowe'));
+   if(typeof target==='number'){idx=target;show()}
+   else if(typeof target==='string'){host.innerHTML='<div class="'+(yes?'okbox':'badbox')+'"><b>Wniosek diagnostyczny</b><br>'+esc(target)+'<hr><button class="secondary" id="restartTree">Rozpocznij procedurę od nowa</button></div>'; $('restartTree').onclick=()=>{idx=0;answers.length=0;show()}}
+   else {host.innerHTML='<div class="result">Brak dalszego kroku.</div>'}
+ }
+ show();
+}
+
+$('startVehicleDiag').addEventListener('click',()=>{
+ const ctx=$('brandSel').value+' '+$('modelSel').value+' • '+$('yearSel').value+' • '+$('engineSel').value+' • '+$('symptomSel').value+($('vehicleDtc').value.trim()?' • DTC '+$('vehicleDtc').value.trim().toUpperCase():'');
+ const proc=findProcedure($('symptomSel').value,$('vehicleDtc').value);
+ startTree(proc,'vehicleDiagBox',ctx);
+});
+
+$('dtcSearchBtn').addEventListener('click',()=>{
+ const code=$('dtcInput').value.trim().toUpperCase(); const d=dtcDb[code];
+ if(!code){$('dtcResult').innerHTML='<div class="badbox">Wpisz kod DTC.</div>';return}
+ if(d){
+  const p=findProcedure('',code);
+  $('dtcResult').innerHTML='<div class="result"><span class="badge">'+esc(code)+'</span><h2>'+esc(d.name)+'</h2><p>'+esc(d.advice)+'</p><button class="primary" id="dtcStartTree">Uruchom procedurę</button></div><div id="dtcTree"></div>';
+  $('dtcStartTree').onclick=()=>startTree(p,'dtcTree','DTC '+code+' • '+d.name);
+ } else if(dtcBaseDb[code]) {
+  $('dtcResult').innerHTML='<div class="result"><span class="badge">'+esc(dtcGroupName(code))+'</span><h2>'+esc(code)+' — '+esc(dtcBaseDb[code])+'</h2><p>'+esc((dtcBaseExtra[code]&&dtcBaseExtra[code].test)||dtcGenericAdvice(code))+'</p><p class="muted small">Dla kodów producenta zawsze potwierdź znaczenie dla konkretnej marki, modelu i sterownika.</p></div>';
+ } else {
+  $('dtcResult').innerHTML='<div class="result"><h2>'+esc(code)+'</h2><p>Brak tego kodu w lokalnej bazie. Odczytaj pełny opis z testera, Freeze Frame, zasilania/masy danego układu i parametry Live Data.</p></div>';
+ }
+});
+
+$('liveParam').innerHTML=liveParams.map((p,i)=>'<option value="'+i+'">'+esc(p.name)+'</option>').join('');
+$('liveBtn').addEventListener('click',()=>{
+ const p=liveParams[Number($('liveParam').value)],v=Number(String($('liveValue').value).replace(',','.'));
+ if(Number.isNaN(v)){$('liveResult').innerHTML='<div class="badbox">Wpisz wartość liczbową.</div>';return}
+ let msg=v<p.min?p.low:(v>p.max?p.high:p.ok);
+ $('liveResult').innerHTML='<div class="result"><b>'+esc(p.name)+'</b><br>Wartość: <b>'+esc(v)+'</b><br><br>'+esc(msg)+'<br><span class="muted small">Zakres orientacyjny V1: '+p.min+'–'+p.max+'. Zawsze porównuj ze specyfikacją konkretnego silnika.</span></div>';
+});
+
+let trainerIndex=0;
+function renderTrainer(){
+ const c=trainerCases[trainerIndex%trainerCases.length];
+ $('trainerBox').innerHTML='<div class="card"><span class="badge">Przypadek '+(trainerIndex%trainerCases.length+1)+'/'+trainerCases.length+'</span><h2>'+esc(c.title)+'</h2><div class="result"><b>Objaw:</b> '+esc(c.sym)+'</div><h3>Co sprawdzisz jako następne?</h3><div id="trainerChoices">'+c.choices.map((x,i)=>'<button class="choice" data-i="'+i+'">'+esc(x[0])+'</button>').join('')+'</div><div id="trainerAns"></div><div class="toolbar"><button class="secondary" id="trainerNext">Następny przypadek</button></div></div>';
+ document.querySelectorAll('#trainerChoices .choice').forEach(b=>b.onclick=()=>{const x=c.choices[Number(b.dataset.i)];document.querySelectorAll('#trainerChoices button').forEach(y=>y.disabled=true);$('trainerAns').innerHTML='<div class="'+(x[1]?'okbox':'badbox')+'"><b>'+(x[1]?'Dobry kierunek':'Nie najlepszy krok')+'</b><br>'+esc(x[2])+'</div>'});
+ $('trainerNext').onclick=()=>{trainerIndex++;renderTrainer()};
+}
+$('trainerStart').onclick=()=>{trainerIndex=0;renderTrainer()};
+
+function renderLibrary(){
+ const q=$('libSearch').value.toLowerCase().trim(),cat=$('libCat').value;
+ const arr=procedures.filter(p=>(cat==='Wszystkie'||p.cat===cat)&&JSON.stringify(p).toLowerCase().includes(q));
+ $('libList').innerHTML=arr.map(p=>'<div class="card diag-card" data-title="'+encodeURIComponent(p.title)+'"><span class="badge">'+esc(p.cat)+'</span><h2>'+esc(p.title)+'</h2><p class="muted">'+esc(p.intro)+'</p></div>').join('')||'<p class="muted">Brak wyników.</p>';
+ document.querySelectorAll('.diag-card').forEach(el=>el.onclick=()=>openLib(decodeURIComponent(el.dataset.title)));
+}
+function openLib(title){
+ const p=procedures.find(x=>x.title===title); if(!p)return;
+ $('libDetail').innerHTML='<div class="card"><h2>'+esc(p.title)+'</h2><p>'+esc(p.intro)+'</p><h3>Logika procedury</h3>'+p.steps.map((s,i)=>'<div class="step"><b>Krok '+(i+1)+'</b><br>'+esc(s.q)+'</div>').join('')+'<button class="primary" id="libRun">Uruchom interaktywnie</button><div id="libTree"></div></div>';
+ $('libRun').onclick=()=>startTree(p,'libTree','Baza procedur • '+p.title);
+ $('libDetail').scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('libSearch').addEventListener('input',renderLibrary);$('libCat').addEventListener('change',renderLibrary);
+
+fillVehicle();renderLibrary();renderDtcBase();
+$('kpiBrands').textContent=Object.keys(vehicles).length;
+$('kpiProcedures').textContent=procedures.length;
+$('kpiTrainer').textContent=trainerCases.length;
+
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
 })();
 </script>
 </body>
