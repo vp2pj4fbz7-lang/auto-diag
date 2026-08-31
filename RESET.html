@@ -1,1 +1,25 @@
-<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reset V6.8</title><style>body{font-family:-apple-system,sans-serif;background:#0b1624;color:#fff;padding:30px}button{padding:16px;font-size:18px}</style></head><body><h1>Elektronik Diag V6.8</h1><button id="b">Wyczyść i uruchom V6.8</button><script>b.onclick=async()=>{if('caches'in window)for(const k of await caches.keys())await caches.delete(k);if('serviceWorker'in navigator)for(const r of await navigator.serviceWorker.getRegistrations())await r.unregister();setTimeout(()=>location.replace('./index.html?v=6.8&t='+Date.now()),400)}</script></body></html>
+<!doctype html><html lang="pl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AutoDiag V6.1 Reset</title>
+<style>body{font-family:-apple-system,sans-serif;background:#08111f;color:white;padding:30px}button{font-size:18px;padding:15px;border-radius:12px}</style>
+</head><body>
+<h1>AutoDiag PRO V6.1 — RESET</h1>
+<p>Reset dotyczy tylko aplikacji działającej w katalogu <b>/autodiag/</b>.</p>
+<button id="b">Wyczyść AutoDiag i uruchom V6.1</button>
+<pre id="o"></pre>
+<script>
+b.onclick=async()=>{
+ o.textContent='Czyszczenie AutoDiag...\n';
+ if('caches'in window){
+   for(const k of await caches.keys()){
+     if(k.startsWith('autodiag-')){await caches.delete(k);o.textContent+='Usunięto '+k+'\n';}
+   }
+ }
+ if('serviceWorker'in navigator){
+   for(const r of await navigator.serviceWorker.getRegistrations()){
+     if(r.scope.includes('/autodiag/')) await r.unregister();
+   }
+ }
+ setTimeout(()=>location.replace('./index.html?v=6.1&t='+Date.now()),500);
+}
+</script></body></html>

@@ -1,10 +1,11 @@
 {
-  "name": "Elektronik Diag V6.8 – Naprawa Smartphone",
-  "short_name": "Elektronik Diag V6.8",
-  "start_url": "./index.html?v=6.8",
+  "id": "./autodiag-v6-1",
+  "name": "Auto Diag PRO V6.1",
+  "short_name": "AutoDiag",
+  "start_url": "./index.html?v=6.1",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0b1624",
+  "background_color": "#08111f",
   "theme_color": "#102238",
-  "description": "Diagnostyka i procedury napraw smartfonów: iPhone, Samsung, Xiaomi i Motorola."
+  "description": "Oddzielona aplikacja AutoDiag: diagnostyka samochodowa, bazy usterek i katalog szyb."
 }
