@@ -1,10 +1,10 @@
 {
-  "name": "Auto Diag PRO V5 – Baza wiedzy warsztatowej",
-  "short_name": "AutoDiag PRO V5",
-  "start_url": "./?v=5",
+  "name": "Elektronik Diag V6.8 – Naprawa Smartphone",
+  "short_name": "Elektronik Diag V6.8",
+  "start_url": "./index.html?v=6.8",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0b1624",
   "theme_color": "#102238",
-  "description": "Samochodowy asystent diagnostyczny: diagnostyka po aucie, DTC, Live Data, Atlas podzespołów i procedury."
+  "description": "Diagnostyka i procedury napraw smartfonów: iPhone, Samsung, Xiaomi i Motorola."
 }
