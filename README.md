@@ -1,7 +1,7 @@
-Auto Diag V1 — PWA na iPada
+Auto Diag PRO V6.2 — PWA na iPada
 
 Zawiera:
-- bazę typowych usterek,
+- rozbudowaną Bazę usterek PRO: 82 przypadki z objawami, przyczynami, pomiarami i decyzjami naprawczymi,
 - OBD/DTC,
 - pomiary napięć i CAN,
 - schematy diagnostyczne,

@@ -1,11 +1,11 @@
 {
-  "id": "./autodiag-v6-1",
-  "name": "Auto Diag PRO V6.1",
+  "id": "./autodiag-v6-2",
+  "name": "Auto Diag PRO V6.2",
   "short_name": "AutoDiag",
-  "start_url": "./index.html?v=6.1",
+  "start_url": "./index.html?v=6.2",
   "scope": "./",
   "display": "standalone",
   "background_color": "#08111f",
   "theme_color": "#102238",
-  "description": "Oddzielona aplikacja AutoDiag: diagnostyka samochodowa, bazy usterek i katalog szyb."
+  "description": "AutoDiag z rozbudowaną Bazą usterek PRO, diagnostyką samochodową i katalogiem szyb."
 }
