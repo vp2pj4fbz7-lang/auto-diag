@@ -1,4 +1,4 @@
-Auto Diag PRO V6.2 — PWA na iPada
+Auto Diag PRO V7.0 — PWA na iPada
 
 Zawiera:
 - rozbudowaną Bazę usterek PRO: 82 przypadki z objawami, przyczynami, pomiarami i decyzjami naprawczymi,
@@ -8,6 +8,7 @@ Zawiera:
 - atlas czujników i elementów wykonawczych,
 - wyszukiwanie napraw w Internecie,
 - historię własnych napraw.
+- Akademię Diagnostyki: 32 lekcje, quizy, ścieżki nauki, 8 przypadków warsztatowych i zapis postępu.
 
 Do instalacji jako osobna ikona:
 1. Wgraj pliki do osobnego repozytorium GitHub, np. auto-diag.

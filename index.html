@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="AutoDiag PRO">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Auto Diag PRO V6.2</title>
+<title>Auto Diag PRO V7.0 – Akademia Diagnostyki</title>
 <style>
 :root{
  --bg:#0b1220;--side:#111827;--panel:#162033;--panel2:#1f2b42;--border:#334155;
@@ -17,8 +17,9 @@
 body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif}
 button,input,select,textarea{font:inherit}
 .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
-aside{background:var(--side);border-right:1px solid var(--border);padding:20px;position:sticky;top:0;height:100vh}
+aside{background:var(--side);border-right:1px solid var(--border);padding:20px;position:sticky;top:0;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
 .brand{font-size:26px;font-weight:900}.version{font-size:12px;color:var(--muted);margin:5px 0 18px}
+.nav{min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-right:5px;padding-bottom:max(22px,env(safe-area-inset-bottom))}
 .nav button{display:block;width:100%;background:transparent;color:#fff;border:0;text-align:left;padding:12px 13px;border-radius:11px;margin:3px 0;font-weight:750}
 .nav button.active,.nav button:hover{background:var(--panel2)}
 main{padding:24px;max-width:1400px;width:100%}
@@ -48,14 +49,17 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0}
 .okbox{padding:12px;border:1px solid #2d7c52;background:#153524;border-radius:12px;color:#cef5da}
 .badbox{padding:12px;border:1px solid #914252;background:#3a2028;border-radius:12px;color:#ffd4da}
 code{background:#0d1727;padding:2px 5px;border-radius:6px}
-@media(max-width:900px){.app{grid-template-columns:1fr}aside{height:auto;position:relative;border-right:0;border-bottom:1px solid var(--border)}.nav{display:flex;overflow:auto}.nav button{min-width:max-content}.grid,.grid3{grid-template-columns:1fr}.main{padding:14px}}
+.academyTop{display:grid;grid-template-columns:2fr 1fr;gap:14px}.academyProgress{height:12px;background:#0d1727;border:1px solid var(--border);border-radius:999px;overflow:hidden}.academyProgress>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--ok));width:0}.academyGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.academyCard{cursor:pointer;position:relative}.academyCard:hover{border-color:var(--accent)}.academyDone{position:absolute;right:13px;top:13px;font-size:20px}.academyMeta{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.academyStep{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;margin:10px 0}.academyStepNum{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--panel2);color:var(--accent);font-weight:900}.academyQuiz{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0d1727;color:#fff}.academyQuiz.correct{border-color:var(--ok);background:#153524}.academyQuiz.wrong{border-color:var(--bad);background:#3a2028}.academyPath{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.academyPath span{background:#0d1727;border:1px solid var(--border);border-radius:10px;padding:9px}.academyCaseBtn{display:block;width:100%;text-align:left;margin:8px 0}.academyTabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px}.academyTabs button{white-space:nowrap}.academyTabs button.active{background:var(--accent);color:#07111a}
+@media(max-width:1050px){.academyGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.app{grid-template-columns:1fr}aside{height:auto;position:relative;border-right:0;border-bottom:1px solid var(--border);display:block;overflow:visible}.nav{display:flex;overflow-x:auto;overflow-y:hidden;padding:0 0 8px}.nav button{min-width:max-content}.grid,.grid3,.academyTop{grid-template-columns:1fr}.main{padding:14px}}
+@media(max-width:650px){.academyGrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside>
 <div class="brand">Auto Diag PRO</div>
-<div class="version">V6.2 • ROZBUDOWANA BAZA USTEREK • AutoDiag</div>
+<div class="version">V7.0 • AKADEMIA DIAGNOSTYKI • AutoDiag</div>
 <div class="nav">
 <button class="active" data-v="home">Pulpit</button>
 <button data-v="vehicle">🚗 Diagnoza po aucie</button>
@@ -68,6 +72,7 @@ code{background:#0d1727;padding:2px 5px;border-radius:6px}
 <button data-v="enginefaults">🧠 Osprzęt / BSI / BSM</button>
 <button data-v="glasscat">🪟 Katalog szyb</button>
 <button data-v="live">📊 Live Data</button>
+<button data-v="academy">🎓 Akademia Diagnostyki</button>
 <button data-v="trainer">🎓 Trener diagnostyki</button>
 <button data-v="library">📚 Baza procedur</button>
 </div>
@@ -75,7 +80,7 @@ code{background:#0d1727;padding:2px 5px;border-radius:6px}
 
 <main>
 <section id="home" class="view active">
-<h1>Auto Diag PRO V6.2</h1>
+<h1>Auto Diag PRO V7.0</h1>
 <p class="muted">Warsztatowy asystent prowadzący od objawu i danych pojazdu do kolejnych pomiarów, interpretacji wyniku oraz możliwej naprawy.</p>
 <div class="grid3">
 <div class="card"><div class="muted small">Obsługiwane marki startowe</div><div class="kpi" id="kpiBrands">0</div></div>
@@ -90,6 +95,7 @@ code{background:#0d1727;padding:2px 5px;border-radius:6px}
 <div class="card"><h2>🧰 Baza wiedzy AutoDiag</h2><p>Schematy instalacji elektrycznych, zasady naprawy, katalog narzędzi, katalog zespołów mechanicznych oraz katalog karoserii i wnętrza.</p><button class="secondary" id="openKnowledgeHome">Otwórz Bazę wiedzy</button></div>
 <div class="card"><h2>🩺 Baza usterek PRO</h2><p>Jedna wyszukiwarka wszystkich usterek: objawy, przyczyny, pomiary krok po kroku, decyzje naprawcze i praktyczne wskazówki. Baza: <b id="homeFaultCount">0</b> przypadków.</p><button class="secondary" id="openFaultsHome">Otwórz Bazę usterek PRO</button></div>
 <div class="card"><h2>⚡ Nowe bazy V6</h2><p>Usterki instalacji samochodowej, osprzęt silnika/BSI/BSM/czujniki/alternator/rozrusznik oraz katalog szyb samochodowych z wyszukiwarką.</p></div>
+<div class="card"><h2>🎓 Akademia Diagnostyki</h2><p>32 praktyczne lekcje, quizy, ścieżki nauki, przypadki warsztatowe i zapisywanie postępu. Od podstaw miernika do diagnostyki CAN, silnika, ABS i zasilania sterowników.</p></div>
 <div class="note"><b>Zasada:</b> aplikacja nie zakłada od razu uszkodzonego elementu. Najpierw prowadzi przez zasilania, masy, sygnały, parametry rzeczywiste i warunki pracy.</div>
 <div class="alert" style="margin-top:12px"><b>Bezpieczeństwo:</b> podczas pracy przy instalacji samochodowej nie zwieraj linii zasilających ani magistral komunikacyjnych. Układy SRS/airbag wymagają osobnych procedur bezpieczeństwa.</div>
 </section>
@@ -239,6 +245,17 @@ code{background:#0d1727;padding:2px 5px;border-radius:6px}
 <p class="muted">Symulowane przypadki warsztatowe. Wybierasz kolejny krok i uczysz się toku lokalizacji usterki.</p>
 <div class="card"><button class="primary" id="trainerStart">Uruchom przypadek</button></div>
 <div id="trainerBox"></div>
+</section>
+
+<section id="academy" class="view">
+<h1>🎓 Akademia Diagnostyki</h1>
+<p class="muted">Nauka diagnostyki samochodowej krok po kroku: teoria, pomiary, interpretacja, typowe błędy i test wiedzy.</p>
+<div class="academyTop">
+<div class="card"><h2>Twój postęp</h2><div id="academyProgressText" class="muted"></div><div class="academyProgress" style="margin-top:12px"><span id="academyProgressBar"></span></div></div>
+<div class="card"><div class="muted small">Ukończone lekcje</div><div class="kpi" id="academyDoneCount">0 / 32</div><button class="secondary" id="academyReset" style="margin-top:10px">Wyzeruj postęp</button></div>
+</div>
+<div class="academyTabs"><button class="secondary active" data-academy-tab="lessons">📘 Lekcje</button><button class="secondary" data-academy-tab="paths">🛣️ Ścieżki nauki</button><button class="secondary" data-academy-tab="cases">🧪 Przypadki warsztatowe</button><button class="secondary" data-academy-tab="checklist">✅ Checklista diagnosty</button></div>
+<div id="academyContent"></div>
 </section>
 
 <section id="library" class="view">
@@ -685,5 +702,6 @@ $('glassBrand').addEventListener('change',renderGlass);$('glassType').addEventLi
 
 })();
 </script>
+<script src="academy_module.js"></script>
 </body>
 </html>

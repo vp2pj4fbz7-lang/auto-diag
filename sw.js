@@ -1,5 +1,5 @@
-const CACHE='autodiag-v6-2-faults-pro';
-const ASSETS=['./','./index.html','./faults-extra.js','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
+const CACHE='autodiag-v7-0-akademia';
+const ASSETS=['./','./index.html','./faults-extra.js','./academy_module.js','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(
   caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('autodiag-')&&k!==CACHE).map(k=>caches.delete(k))))
